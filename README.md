@@ -26,7 +26,7 @@ Your agent will clone the repo, run the environment checks, interview you about 
 - **Git sync after every change**, so your second brain is versioned, diffable, and recoverable like any codebase
 - **Portable skills** that travel with the vault instead of living in a single agent's private config
 - **Maintenance built in** — a standing routine for keeping the setup current as agents and tools evolve
-- **Works in Obsidian** out of the box, so you get a graph view and a proper editor on top of the same plain-text files your agent reads and writes
+- **Works in Obsidian** out of the box — ships with a starter `.obsidian/` config (sensible editor defaults, per-folder graph colors, a theme selection) so the graph view and editor look considered from the first launch, on top of the same plain-text files your agent reads and writes
 
 ## How it works
 
