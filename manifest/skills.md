@@ -4,6 +4,12 @@ A curated catalog of third-party skills that work well with this template's vaul
 
 None of these are installed by the template itself. They are third-party skills — install only one at a time, only after running the security gate from `SETUP.md` Phase 4, and only with the user's explicit OK for that specific skill.
 
+## Where skills go
+
+The **Install** column below shows each tool's own **upstream** command — the destination that tool's own docs recommend, which is often a single agent's private config directory (for example Claude Code's `~/.claude/skills`, or wherever `npx skills add` / a given CLI's `init` command defaults to). Followed literally, a Codex or Gemini CLI user would install the skill somewhere their own agent never looks, breaking the portability this template promises.
+
+For a skill to be portable across agents, it needs to live in the **vault's own `skills/` folder** — the same place the template's core skills live, and the folder every agent is told to check via `AGENTS.md`'s skill reflex rule. So: run the upstream Install command as shown (it's still the correct, canonical way to fetch the skill), but then place or copy the resulting skill folder into the vault's `skills/<name>/` — instead of, or in addition to, wherever the tool put it by default. That one extra step is what makes the skill visible to every agent, not just the one whose default path the installer happened to target.
+
 | Skill | Purpose | Source | Install | Good for |
 |---|---|---|---|---|
 | excalidraw-diagram-skill | Generate Excalidraw diagram JSON files (flowcharts, architecture sketches, concept maps) from natural language | [github.com/coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill) | Clone or download, then `cp -r excalidraw-diagram-skill .claude/skills/excalidraw-diagram`; `cd` into its `references/` folder and run `uv sync && uv run playwright install chromium` | Users who sketch workflows, architectures, or concepts and want a durable diagram file instead of a whiteboard photo |

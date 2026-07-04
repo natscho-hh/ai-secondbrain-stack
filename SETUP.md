@@ -27,7 +27,7 @@ This file is a script written for you to execute, not a document for the user to
    - a folder that already contains unrelated files or projects.
    It **is safe** if it is an empty or dedicated folder created specifically for the vault (for example, the fresh subfolder the Bootstrap Prompt asked you to clone into is fine as a base, but the vault itself should live in its own dedicated folder).
 3. If the location is not safe, warn the user in these terms: *"From here I can access far more of this computer than needed. Let's give your second brain its own dedicated folder so I only ever work inside it."* Then:
-   a. Create a dedicated folder. Suggest `~/Vaults/` as the parent (e.g. `~/Vaults/`), and confirm the exact path with the user.
+   a. Create a dedicated folder. Suggest `~/Vaults/` as the parent, and confirm the exact path with the user.
    b. Tell the user how to restart the agent in that folder — the exact instruction depends on their agent (for most CLI agents: close the agent, `cd` into the new folder, and start the agent again there). Do **not** try to silently `cd` and keep going; a clean restart in the safe folder is the reliable path.
    c. Wait for the user to confirm they have restarted in the new folder before continuing.
 4. Explain the agent's permission mode in one short paragraph, in plain language: describe how your specific agent asks for approval before running commands or editing files (some agents prompt for every action, some run inside a sandbox, some need an explicit "allow" for network or file access). The point the user must understand: **you only ever operate inside this vault folder, and they can see and approve what you do.**
@@ -106,7 +106,7 @@ This file is a script written for you to execute, not a document for the user to
 
 **Steps:**
 
-1. Create the vault folder using the **vault name** from the interview, and copy the **contents of `template/`** into it — all eight folders (`00 Context` through `07 Attachments`) with their example content.
+1. Create the vault folder using the **vault name** from the interview, and copy the **contents of `template/`** into it — all eight folders (`00 Context` through `07 Attachments`) with their example content, plus the root-level `template/.maintenance-log.md` file, which lands at the vault root as `.maintenance-log.md`.
 2. **If the vault language is not English:** translate the eight folder names and the generated rule file **consistently** into the chosen language (e.g. `00 Context` → `00 Kontext`). Keep the numeric prefixes and the two-digit ordering unchanged. Apply the same translated names everywhere they appear — in the folders themselves and in every reference inside `AGENTS.md` — so nothing points at an English name that no longer exists. If the language is English, skip this step.
 3. Write a **personalized `AGENTS.md`** into the vault: copy it from the repo root as the base, then adjust the structure section, rules, and language to match the interview results (their real areas/projects, their language). **Keep the version comment on line 1 UNCHANGED** — it must stay exactly `<!-- asbos-template-version: 0.1.0 -->` so later maintenance can tell which template version this vault came from.
 4. Write both **adapters** next to it: `CLAUDE.md` and `GEMINI.md`, each a thin file that points at `AGENTS.md` (copy the three-line adapters from the repo root). These are agent entry files and stay in English regardless of vault language, because they only redirect the agent to `AGENTS.md`.
@@ -118,7 +118,7 @@ This file is a script written for you to execute, not a document for the user to
    If `gh` isn't available, tell the user how to create the private repo manually in the GitHub web UI and add it as a remote, or skip and note it as a "later" step. Never make the repo public.
 
 **Success criteria:**
-- [ ] The vault folder exists, named after the vault, containing all eight folders with example content.
+- [ ] The vault folder exists, named after the vault, containing all eight folders with example content, plus `.maintenance-log.md` at the vault root.
 - [ ] If a non-English language was chosen, folder names and `AGENTS.md` are fully and consistently translated; version comment line is untouched.
 - [ ] `AGENTS.md` + `CLAUDE.md` + `GEMINI.md` are present in the vault, personalized where appropriate.
 - [ ] `git init` and a first commit are done; if requested and possible, a private GitHub repo exists and has been pushed to.
@@ -136,12 +136,14 @@ This file is a script written for you to execute, not a document for the user to
 3. **Present a mapping table — as a recommendation, not a command.** Show the user a table comparing their vault to the AI SecondBrain OS layout, with columns like: *existing folder → recommended place*, *what's missing* (parts of the PARA layout they don't have yet), *what already fits* (folders that already map cleanly), and *what stays different on purpose* (structure of theirs you'd deliberately keep as-is). **Recommend a change only where it adds real value.** If their structure already works, say so and leave it. Make clear nothing happens until they choose.
 4. **Apply ONLY what the user confirms, item by item.** Go through the mapping one row at a time and act only on the rows the user approves. Existing notes, their `[[wikilinks]]`, and their installed skills **stay intact** — you do not rewrite links or move notes wholesale. Any skills you detected in step 2 are **registered** (recorded in the vault's manifest/rulebook so agents know they exist), **not reinstalled** — don't re-download or overwrite something they already have.
 5. **Write `AGENTS.md` + adapters adapted to the REAL structure.** Generate `AGENTS.md` (plus the `CLAUDE.md` and `GEMINI.md` adapters) describing the vault **as it actually is after the confirmed changes** — the user's real folder names and organization — not the idealized template layout. Keep the version comment line `<!-- asbos-template-version: 0.1.0 -->` on line 1 so maintenance can track the template version. Commit the result.
+6. **Create `.maintenance-log.md` at the vault root**, if it doesn't already exist — the migration path copies no `template/` content, so this file (which `AGENTS.md`'s Maintenance section and `MAINTENANCE.md` both expect to find) is never created otherwise. Give it the same initial shape as the template's: a `last-check:` line dated to today, plus the comment line `<!-- updated by the maintenance routine -->`. Commit the result.
 
 **Success criteria:**
 - [ ] A git checkpoint of the pre-migration state exists (commit made, or repo initialized + committed).
 - [ ] The user has seen a mapping table framed as recommendations, and only approved rows were applied.
 - [ ] All existing notes, wikilinks, and installed skills are intact; detected skills are registered, not reinstalled.
 - [ ] `AGENTS.md` + adapters describe the vault's real structure and carry the unchanged version comment; changes are committed.
+- [ ] `.maintenance-log.md` exists at the vault root with a `last-check` date and the maintenance-routine comment line.
 
 ---
 
@@ -152,7 +154,7 @@ This file is a script written for you to execute, not a document for the user to
 **Steps:**
 
 1. **Copy the core skills.** Copy the skills from the repo's `skills/` folder into the vault's `skills/` folder. Each skill is its own folder with a `SKILL.md` entry point; keep that structure intact.
-2. **Match the manifest.** Read `manifest/skills.md` (the curated catalog: name, purpose, source, license) and compare its entries against the goals you derived in Phase 2. **Propose** the matching entries to the user, saying in one line what each one is for.
+2. **Match the manifest.** Read `manifest/skills.md` (the curated catalog: name, purpose, source, license) and compare its entries against the goals you derived in Phase 2. **Propose** the matching entries to the user, saying in one line what each one is for. Note that `manifest/skills.md`'s Install column shows each tool's upstream default (often a single agent's own private config directory) — when you actually install a third-party skill, also place its folder into the vault's `skills/<name>/` (adapting the upstream command's destination), so it's portable across whichever agent the user is running, not just the one the upstream default targets.
 3. **Search community directories.** For goals the manifest doesn't cover, additionally search community skill directories (for example the awesome-claude-skills list) for skills that fit the user's stated goals, and surface promising ones.
 4. **Run the security gate before EVERY third-party skill.** Before installing any skill that isn't a template core skill, run this check and say it to the user in these exact words:
 
