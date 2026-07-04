@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI SecondBrain OS — Get Started</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --border: #d8d8d8;
+    --card-bg: #f6f6f7;
+    --accent: #2d5bd7;
+    --accent-fg: #ffffff;
+    --code-bg: #eef0f3;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --fg: #eaeaea;
+      --muted: #a4a8b0;
+      --border: #3a3d44;
+      --card-bg: #1e2126;
+      --accent: #6a97ff;
+      --accent-fg: #0c0c0e;
+      --code-bg: #22262c;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 2.5rem 1.25rem 4rem;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: 1.5;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .tagline {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  nav.agent-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .agent-toggle {
+    background: var(--card-bg);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .agent-toggle:hover,
+  .agent-toggle[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-color: var(--accent);
+  }
+
+  .agent-section {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem 1.5rem;
+    margin-bottom: 1.25rem;
+    background: var(--card-bg);
+  }
+
+  .agent-section[hidden] {
+    display: none;
+  }
+
+  .agent-section h2 {
+    margin-top: 0;
+  }
+
+  .agent-section ol {
+    padding-left: 1.25rem;
+  }
+
+  .agent-section li {
+    margin-bottom: 0.6rem;
+  }
+
+  code {
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.92em;
+    word-break: break-word;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  pre.prompt {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.9rem;
+    margin: 0.75rem 0 0.6rem;
+  }
+
+  .copy-btn {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .copy-btn:active {
+    opacity: 0.8;
+  }
+
+  .closing {
+    margin-top: 1rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 2.5rem;
+  }
+
+  footer a {
+    color: inherit;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>AI SecondBrain OS</h1>
+    <p class="tagline">A git-versioned second brain that works with ANY AI coding agent — Claude Code, Codex, Gemini CLI, Cursor, Copilot. Switch agents anytime; they all follow the same rules.</p>
+  </header>
+
+  <nav class="agent-buttons">
+    <button class="agent-toggle" type="button" data-agent="claude" aria-pressed="false">I use Claude Code</button>
+    <button class="agent-toggle" type="button" data-agent="codex" aria-pressed="false">I use Codex</button>
+    <button class="agent-toggle" type="button" data-agent="gemini" aria-pressed="false">I use Gemini CLI</button>
+    <button class="agent-toggle" type="button" data-agent="cursor" aria-pressed="false">I use Cursor</button>
+    <button class="agent-toggle" type="button" data-agent="copilot" aria-pressed="false">I use GitHub Copilot</button>
+  </nav>
+
+  <section class="agent-section" id="section-claude" hidden>
+    <h2>Claude Code</h2>
+    <ol>
+      <li>Install Claude Code: <code>curl -fsSL https://claude.ai/install.sh | bash</code> — see the <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">official docs</a>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open it in your terminal. Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Launch <code>claude</code> in that folder, then copy the Bootstrap Prompt below and paste it in.</li>
+    </ol>
+    <pre class="prompt" data-prompt-slot></pre>
+    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
+    <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <section class="agent-section" id="section-codex" hidden>
+    <h2>Codex</h2>
+    <ol>
+      <li>Install the Codex CLI: <code>npm install -g @openai/codex</code> (requires Node.js) — see the <a href="https://developers.openai.com/codex/cli" target="_blank" rel="noopener">official docs</a>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open it in your terminal. Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Launch <code>codex</code> in that folder, then copy the Bootstrap Prompt below and paste it in.</li>
+    </ol>
+    <pre class="prompt" data-prompt-slot></pre>
+    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
+    <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <section class="agent-section" id="section-gemini" hidden>
+    <h2>Gemini CLI</h2>
+    <ol>
+      <li>Install Gemini CLI: <code>npm install -g @google/gemini-cli</code> (requires Node.js 18+), or run it without installing via <code>npx</code> — see the <a href="https://geminicli.com/docs/get-started/installation/" target="_blank" rel="noopener">official docs</a>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open it in your terminal. Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Launch <code>gemini</code> in that folder, then copy the Bootstrap Prompt below and paste it in.</li>
+    </ol>
+    <pre class="prompt" data-prompt-slot></pre>
+    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
+    <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <section class="agent-section" id="section-cursor" hidden>
+    <h2>Cursor</h2>
+    <ol>
+      <li>Install Cursor: download the editor from <a href="https://cursor.com/" target="_blank" rel="noopener">cursor.com</a>, or install the standalone CLI with <code>curl https://cursor.com/install -fsS | bash</code>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open it in Cursor (or <code>cd</code> into it before running the CLI). Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Open the agent panel (or run <code>agent</code> in the CLI), then copy the Bootstrap Prompt below and paste it in.</li>
+    </ol>
+    <pre class="prompt" data-prompt-slot></pre>
+    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
+    <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <section class="agent-section" id="section-copilot" hidden>
+    <h2>GitHub Copilot</h2>
+    <ol>
+      <li>Install <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> if you don't already have it, then install the "GitHub Copilot" and "GitHub Copilot Chat" extensions from the VS Code Marketplace (requires an active Copilot subscription). See the <a href="https://code.visualstudio.com/docs/copilot/agents/overview" target="_blank" rel="noopener">official docs</a>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open that folder in VS Code. Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Open Copilot Chat, switch to agent mode, then copy the Bootstrap Prompt below and paste it in.</li>
+    </ol>
+    <pre class="prompt" data-prompt-slot></pre>
+    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
+    <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <footer>
+    <p>Source: <a href="https://github.com/natscho-hh/ai-secondbrain-os" target="_blank" rel="noopener">github.com/natscho-hh/ai-secondbrain-os</a></p>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    "use strict";
+
+    var BOOTSTRAP_PROMPT = "You are setting up AI SecondBrain OS for me. Clone https://github.com/natscho-hh/ai-secondbrain-os into a NEW subfolder of the current directory, read SETUP.md from it, and follow SETUP.md exactly, starting with Phase 0 (environment check). Ask me the interview questions one at a time. Do not skip the security checks.";
+
+    // Fill every <pre> slot with the exact same prompt text (single source of truth).
+    var promptSlots = document.querySelectorAll("[data-prompt-slot]");
+    for (var i = 0; i < promptSlots.length; i++) {
+      promptSlots[i].textContent = BOOTSTRAP_PROMPT;
+    }
+
+    // Wire up each agent's toggle button to show only its own section.
+    var toggles = document.querySelectorAll(".agent-toggle");
+    toggles.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var agent = btn.getAttribute("data-agent");
+        var section = document.getElementById("section-" + agent);
+        var isHidden = section.hasAttribute("hidden");
+
+        if (isHidden) {
+          section.removeAttribute("hidden");
+          btn.setAttribute("aria-pressed", "true");
+        } else {
+          section.setAttribute("hidden", "");
+          btn.setAttribute("aria-pressed", "false");
+        }
+      });
+    });
+
+    // Wire up every Copy button to copy the exact Bootstrap Prompt text.
+    var copyButtons = document.querySelectorAll("[data-copy-btn]");
+    copyButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        navigator.clipboard.writeText(BOOTSTRAP_PROMPT).then(function () {
+          var original = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(function () {
+            btn.textContent = original;
+          }, 1500);
+        }).catch(function () {
+          btn.textContent = "Copy failed — select text manually";
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
