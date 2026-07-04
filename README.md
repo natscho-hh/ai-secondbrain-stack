@@ -38,21 +38,32 @@ Your agent will clone the repo, run the environment checks, interview you about 
 ai-secondbrain-os/
 ├── README.md              # this file
 ├── LICENSE                # MIT
-├── SETUP.md                # agent-executed installer (Phase 0: environment check, then interview + assembly)
-├── MAINTENANCE.md          # recurring update / health-check routine
-├── AGENTS.md               # the single rulebook every agent follows
-├── CLAUDE.md                # 3-line adapter pointing Claude Code at AGENTS.md
-├── GEMINI.md                # 3-line adapter pointing Gemini CLI at AGENTS.md
+├── AGENTS.md              # the single rulebook every agent follows
+├── CLAUDE.md              # 3-line adapter pointing Claude Code at AGENTS.md
+├── GEMINI.md              # 3-line adapter pointing Gemini CLI at AGENTS.md
+├── SETUP.md               # agent-executed installer (environment check, interview, assembly)
+├── MAINTENANCE.md         # recurring update / health-check routine
 ├── .gitignore
-├── skills/                  # portable, agent-agnostic skills
-├── 00 Context/               # personal profile and working preferences
-├── 01 Inbox/                 # unsorted captures, quick notes
-├── 02 Projects/              # active work with a concrete goal and end date
-├── 03 Areas/                 # ongoing responsibilities without an end date
-├── 04 Resources/             # reference knowledge and documentation
-├── 05 Daily Notes/           # YYYY-MM-DD.md daily log
-├── 06 Archive/               # completed projects and inactive areas
-└── 07 Attachments/           # images, PDFs, and other media
+├── skills/                # core skills, SKILL.md standard
+├── manifest/
+│   ├── skills.md          # curated skill catalog (name, purpose, source, license)
+│   └── mcp.md             # MCP server catalog + per-agent config snippets
+├── guides/
+│   ├── first-steps.md     # beginner onboarding
+│   ├── token-friendly.md  # working efficiently with an AI agent
+│   ├── security-basics.md # skill/MCP security, secrets hygiene
+│   ├── model-strategy.md  # plan with a strong model, build with a cheaper one
+│   └── per-agent-tips.md  # tips per agent (Claude Code, Codex, Gemini, Cursor, Copilot)
+├── template/               # vault scaffold, copied into the user's new vault
+│   ├── 00 Context/         # personal profile and working preferences
+│   ├── 01 Inbox/           # unsorted captures, quick notes
+│   ├── 02 Projects/        # active work with a concrete goal and end date
+│   ├── 03 Areas/           # ongoing responsibilities without an end date
+│   ├── 04 Resources/       # reference knowledge and documentation
+│   ├── 05 Daily Notes/     # YYYY-MM-DD.md daily log
+│   ├── 06 Archive/         # completed projects and inactive areas
+│   └── 07 Attachments/     # images, PDFs, and other media
+└── docs/                  # GitHub Pages landing page
 ```
 
 ## Requirements
