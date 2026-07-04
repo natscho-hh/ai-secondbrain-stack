@@ -1,6 +1,6 @@
 ---
 name: vault-health
-description: Check vault consistency: broken wikilinks, missing frontmatter, misplaced files.
+description: "Check vault consistency: broken wikilinks, missing frontmatter, misplaced files."
 ---
 
 ## When to use

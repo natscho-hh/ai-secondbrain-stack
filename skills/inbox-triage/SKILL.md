@@ -1,6 +1,6 @@
 ---
 name: inbox-triage
-description: Process 01 Inbox: discard, park as pending, or file into the PARA structure.
+description: "Process 01 Inbox: discard, park as pending, or file into the PARA structure."
 ---
 
 ## When to use
