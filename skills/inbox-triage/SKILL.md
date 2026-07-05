@@ -17,7 +17,8 @@ Use this skill whenever `01 Inbox/` has one or more notes waiting to be processe
 3. If the user chooses **discard**: confirm the exact file, then delete it.
 4. If the user chooses **pending**: rename the file to `Pending - <topic>.md` and restructure it with three sections: `## Source` (where the idea came from), `## Analysis` (what it is and why it matters), `## Next step` (the concrete next action). Leave it in `01 Inbox/`.
 5. If the user chooses **file**: move the note into the correct destination folder, and set its YAML frontmatter (`tags`, `status`, `date`) to match the target area's conventions.
-6. After processing all notes in the batch, commit the changes with a short, descriptive message and push.
+6. Whatever the choice (pending or file), retrofit any missing frontmatter (`tags`, `status`, `date`) — quick captures often arrive without any.
+7. After processing all notes in the batch, commit the changes with a short, descriptive message and push.
 
 ## Rules
 

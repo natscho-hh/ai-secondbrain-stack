@@ -10,6 +10,43 @@ Practical notes for each of the five agents this vault supports. Facts below wer
 - **Model switch:** `/model` — e.g. `/model opus`, `/model sonnet`, `/model haiku`; the menu also has a combined "Opus in plan mode, Sonnet otherwise" option.
 - **MCP config:** `.mcp.json` in the vault root (project-scoped, shareable via git) or `~/.claude.json` (user-scoped, managed with `claude mcp add --scope user`).
 - **Quirk:** Claude Code is the only one of these five agents that reads the vault's `skills/` folder natively — every other agent needs to be told to check it manually, per the "Skill reflex" section of `AGENTS.md`.
+- **Session-routine hooks (optional, recommended):** the session routines in `AGENTS.md` are prose — they work only as long as the agent remembers them. Claude Code can enforce the two critical ones mechanically with hooks in `.claude/settings.json` inside your vault:
+
+  ```json
+  {
+    "hooks": {
+      "SessionStart": [
+        { "matcher": "startup", "hooks": [{ "type": "command", "command": "sh .claude/hooks/session-start.sh" }] }
+      ],
+      "Stop": [
+        { "hooks": [{ "type": "command", "command": "sh .claude/hooks/stop-gitsync.sh" }] }
+      ]
+    }
+  }
+  ```
+
+  `session-start.sh` runs the session-start routine for real (pull + inbox report; its stdout lands in Claude's context):
+
+  ```sh
+  #!/bin/sh
+  git pull --no-edit origin main
+  echo "Inbox:"
+  ls "01 Inbox"
+  ```
+
+  `stop-gitsync.sh` is a git-sync guard: exit code 2 blocks the session from ending and shows the message to Claude, so unsynced changes can't slip through. The `stop_hook_active` check prevents an infinite loop:
+
+  ```sh
+  #!/bin/sh
+  payload=$(cat)
+  case "$payload" in *'"stop_hook_active":true'*) exit 0 ;; esac
+  if [ -n "$(git status --porcelain)" ]; then
+    echo "Uncommitted vault changes - run the git sync (add/commit/push) before ending." >&2
+    exit 2
+  fi
+  ```
+
+  On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. The other four agents have no hook system for this — for them the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
 
 ## Codex CLI
 

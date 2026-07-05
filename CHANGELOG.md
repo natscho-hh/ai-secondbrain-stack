@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-07-05
+
+Field-tested rule upgrades. The source vault this template was derived from went through a full multi-agent audit; every fix that generalizes now flows back into the template. Existing vaults pick these up via the selective-adoption step in `MAINTENANCE.md` — nothing is forced.
+
+### Added
+
+- **`99 Templates/` + Obsidian templates config.** Three note templates (daily note, project, inbox capture) wired into the Templates core plugin via `.obsidian/templates.json`. The audit found that hand-written frontmatter is the root cause of tag and status drift — templates heal it at the source. (v0.1.0 shipped the Templates plugin enabled but no templates folder.)
+- **`todos.md` — a root-level priority board** across all projects, plus the "one home per piece of information" rule: project file = current state + next step, `todos.md` = cross-project priorities, daily note = day log. State drift across multiple places was the audit's biggest systemic finding.
+- **Tag taxonomy rule**: lowercase kebab-case, first tag names the note type, no synonym tags.
+- **`waiting` status** for work blocked on someone/something external (name the trigger in the note), plus clear exemptions: daily notes and `00 Context` notes carry no status; in folder-projects only the hub file does.
+- **External link-note rule**: every external repo or file the vault references gets its own link note (path, URL, branch, backlink) so knowledge and code stay connected.
+- **Session-routine hooks pattern** (Claude Code): a SessionStart hook that pulls and reports the inbox, and a Stop hook that refuses to end the session with uncommitted changes — automation beats memory. Documented with ready-to-copy scripts in `guides/per-agent-tips.md`.
+
+### Changed
+
+- **Session end is now a mandatory 4-step routine** (was: a loose "offer to…"): update touched project files first, sync `todos.md`, write the daily note (lessons distilled into resource notes), then offer inbox cleanup flagging pending notes older than 14 days.
+- **Resources rule relaxed**: folders per topic, but flat single-reference notes directly in `04 Resources/` are fine. The old "always folders" rule was the one rule the source vault consistently broke in practice — the practice won.
+- **Inbox triage** now retrofits missing frontmatter on captured notes; **vault-health** additionally validates `status` values against the allowed set.
+- `SETUP.md` scaffold and translation steps cover the new folder, templates, and `todos.md`.
+
 ## [0.1.0] — 2026-07-04
 
 First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnostic second brain that any coding agent can drive from a single rulebook.
@@ -23,4 +43,5 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
+[0.2.0]: https://github.com/natscho-hh/ai-secondbrain-os/releases/tag/v0.2.0
 [0.1.0]: https://github.com/natscho-hh/ai-secondbrain-os/releases/tag/v0.1.0

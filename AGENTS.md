@@ -1,11 +1,11 @@
-<!-- asbos-template-version: 0.1.0 -->
+<!-- asbos-template-version: 0.2.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
 
 ## Vault structure
 
-The vault follows a PARA-style layout: eight top-level folders, each with one clear job. Every agent and every skill assumes these exact names and this order.
+The vault follows a PARA-style layout: nine top-level folders, each with one clear job. Every agent and every skill assumes these exact names and this order.
 
 | Folder | Purpose |
 |---|---|
@@ -17,16 +17,24 @@ The vault follows a PARA-style layout: eight top-level folders, each with one cl
 | `05 Daily Notes` | Daily log, one file per day, named `YYYY-MM-DD.md`. Gives continuity between sessions. |
 | `06 Archive` | Completed projects and inactive areas, moved here only on explicit request. |
 | `07 Attachments` | Images, PDFs, and other media referenced from notes. |
+| `99 Templates` | Obsidian note templates (daily note, project, inbox capture) — use them when creating new notes so frontmatter stays consistent. |
+
+Two files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work), and the agent rule files (`AGENTS.md` and its adapters).
 
 ## Vault rules
 
 - Use `[[wikilinks]]` to connect notes to each other.
 - Keep notes atomic: one idea per note. The one exception is daily notes, which are a running log.
-- Every note's YAML frontmatter includes `tags`, `status` (`active` / `completed` / `paused`), and `date`.
+- Every note's YAML frontmatter includes `tags`, `status`, and `date`. Allowed `status` values: `active` / `completed` / `paused` / `waiting` (`waiting` = blocked on someone or something external — name the trigger in the note). Daily notes and `00 Context` notes don't need a `status` field. When a project grows into a folder, only its hub/README file carries the project status; sub-notes omit it or inherit it.
+- Tags are lowercase kebab-case. The first tag names the note type (`project` / `area` / `resource` / `daily` / `inbox` / `archive` / `context`), followed by topic tags. Before inventing a new tag, check whether an existing one fits — no synonyms.
+- One home per piece of information: the project file holds current state + next step, `todos.md` holds cross-project priorities, the daily note holds the day's log. Never maintain the same open-items list in two places; if they disagree, the project file wins.
+- Every external repo or file the vault refers to gets its own link note (local path, remote URL, branch, backlink to the project) — so knowledge and code stay connected. Never delete these link notes.
+- During inbox triage, add any missing frontmatter (`tags`, `status`, `date`) to captured notes before filing them.
+- When creating a new note, start from the matching template in `99 Templates/` so frontmatter stays consistent.
 - File names use normal spelling and spaces — no forced kebab-case or underscores.
 - A new note with no clear place goes into `01 Inbox/`.
 - New projects start as a single `.md` file directly under `02 Projects/`; split into a folder only once a project genuinely needs multiple files.
-- Areas and Resources are always folders, not single files.
+- Areas are always folders. Resources use a folder per topic; flat single-reference notes directly in `04 Resources/` are fine.
 - Move completed work into `06 Archive/` only when the user explicitly asks for it — never automatically.
 - Always ask before deleting or overwriting a note.
 - When the user says "remember this," file the information in the topically correct place — a writing-style note goes to the relevant style guide, project knowledge goes into the project file, general reference goes into Resources, and vault-wide rules go here, in `AGENTS.md`.
@@ -40,7 +48,13 @@ The vault follows a PARA-style layout: eight top-level folders, each with one cl
 
 **On request** ("where was I?" or "what's active right now?"): read the last 2–3 daily notes plus the currently active projects, then give the user a short briefing.
 
-**Session end:** offer to (1) create today's daily note, (2) save any new insights from the session as notes, and (3) clean up the inbox.
+**Session end** (mandatory for any session that did real work — the order matters, project files first):
+1. Update the state block of every project file the session touched — not just the daily note.
+2. Sync `todos.md`: tick off what got done, add what came up, set the date stamp at the top.
+3. Create or update today's daily note. Distill lessons learned into the matching resource note; the daily note only links there.
+4. Offer to clean up the inbox; call out pending notes older than 14 days and ask whether to do, schedule, or drop them.
+
+**Automating the routines:** prose routines rely on the agent remembering them — automation beats memory. Claude Code can enforce both routines with hooks (a SessionStart hook that pulls and reports the inbox, and a Stop hook that refuses to end the session while uncommitted changes exist); see the Claude Code section of `guides/per-agent-tips.md` for the pattern. Other agents run these routines conversationally.
 
 ## Git sync (mandatory)
 

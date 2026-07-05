@@ -10,8 +10,8 @@ Use this skill during the monthly maintenance check, whenever the user asks for 
 ## Steps
 
 1. Grep the vault for all `[[wikilink]]` targets, and for each one check whether a matching file actually exists. Collect any wikilink whose target has no corresponding note.
-2. List every note that is missing a `tags:` field in its YAML frontmatter.
-3. List every file sitting directly in the vault root (or any other place outside its expected PARA folder) that should instead live under `00 Context`, `01 Inbox`, `02 Projects`, `03 Areas`, `04 Resources`, `05 Daily Notes`, `06 Archive`, or `07 Attachments`.
+2. List every note that is missing a `tags:` field in its YAML frontmatter, and every note whose `status` value is outside the allowed set (`active` / `completed` / `paused` / `waiting`, or their translated equivalents from `AGENTS.md`).
+3. List every file sitting directly in the vault root (or any other place outside its expected PARA folder) that should instead live under `00 Context`, `01 Inbox`, `02 Projects`, `03 Areas`, `04 Resources`, `05 Daily Notes`, `06 Archive`, `07 Attachments`, or `99 Templates` — the rule files, `todos.md`, and `.maintenance-log.md` legitimately live at the root.
 4. Report all three findings together as a single table: issue type, file, and what's wrong.
 5. Do not change anything yet — present the report and ask the user which issues to fix.
 6. Only after the user confirms, apply the agreed fixes (repair or remove broken links, add missing frontmatter, move misplaced files), then commit and push.
