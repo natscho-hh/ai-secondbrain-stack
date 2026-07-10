@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-07-11
+
+The project has a new name: **AI SecondBrain Stack** (formerly AI SecondBrain OS), and a sharpened agent lineup: Claude Code, Codex CLI, Gemini CLI, and OpenCode.
+
+### Changed
+
+- **Renamed to AI SecondBrain Stack.** Repo moved to `natscho-hh/ai-secondbrain-stack` (GitHub redirects the old repo URL; git remotes keep working). The landing page moved to <https://natscho-hh.github.io/ai-secondbrain-stack/> — the old GitHub Pages URL is **not** redirected, update your bookmarks. The Bootstrap Prompt now clones the new URL. The `asbos-template-version` marker key is intentionally **unchanged** — it's a stable identifier, and renaming it would break the maintenance routine's version check in every existing vault.
+- **Supported agents are now Claude Code, Codex CLI, Gemini CLI, and OpenCode.** Cursor and GitHub Copilot are no longer documented targets; their sections and config snippets were removed from the README, landing page, rulebook, per-agent tips, model strategy, MCP catalog, and skills README. (Vaults keep working with any agent that reads `AGENTS.md` — they're just no longer maintained/tested here.)
+- **New social card** (`assets/social-card.png`), wired into the landing page via Open Graph tags.
+
+### Added
+
+- **OpenCode support**: it reads `AGENTS.md` natively (project root and `~/.config/opencode/AGENTS.md`), so no adapter file is needed. New landing-page walkthrough, per-agent tips section (install, Tab plan-mode toggle, `/models`, `opencode.json`), model-strategy row, and MCP config snippets (top-level `mcp` key, `command` as array).
+
+### Fixed
+
+- `SETUP.md` Phase 3b told migrating agents to keep a hardcoded `0.1.0` version marker — it now references the current marker from the repo root's `AGENTS.md`.
+- `guides/per-agent-tips.md` claimed no other agent has a hook system — Codex meanwhile ships hooks (`hooks.json`, same JSON shape as Claude Code, with a JSON-on-stdout convention and a one-time `/hooks` trust step for project-local hooks); the guide now says so.
+
 ## [0.2.0] — 2026-07-05
 
 Field-tested rule upgrades. The source vault this template was derived from went through a full multi-agent audit; every fix that generalizes now flows back into the template. Existing vaults pick these up via the selective-adoption step in `MAINTENANCE.md` — nothing is forced.
@@ -36,12 +55,13 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 - **Curated catalogs** (`manifest/`): a skill catalog with discovery guidance and a security gate, and an MCP catalog with per-agent config snippets for all five agents.
 - **User guides** (`guides/`): first steps, token-friendly working, security basics, model strategy (plan with a strong model, build with a cheaper one), and per-agent tips.
 - **Maintenance built in** (`MAINTENANCE.md`): a monthly, agent-run routine that keeps skills, plugins, MCP servers, and the template itself up to date — set up once during install, never a chore afterward.
-- **Landing page** at [natscho-hh.github.io/ai-secondbrain-os](https://natscho-hh.github.io/ai-secondbrain-os/): pick your agent, copy the bootstrap prompt, go.
+- **Landing page** at [natscho-hh.github.io/ai-secondbrain-stack](https://natscho-hh.github.io/ai-secondbrain-stack/) (URL updated after the v0.3.0 rename): pick your agent, copy the bootstrap prompt, go.
 - **Non-English vaults**: choose your language and setup translates the folder names, the rulebook, the Obsidian settings, and the example notes consistently — skills and guides stay English as reference material.
 
 ### Notes
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
-[0.2.0]: https://github.com/natscho-hh/ai-secondbrain-os/releases/tag/v0.2.0
-[0.1.0]: https://github.com/natscho-hh/ai-secondbrain-os/releases/tag/v0.1.0
+[0.3.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.3.0
+[0.2.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.2.0
+[0.1.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.1.0

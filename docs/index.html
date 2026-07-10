@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI SecondBrain OS — Get Started</title>
+<title>AI SecondBrain Stack — Get Started</title>
+<meta property="og:title" content="AI SecondBrain Stack">
+<meta property="og:description" content="A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://natscho-hh.github.io/ai-secondbrain-stack/">
+<meta property="og:image" content="https://raw.githubusercontent.com/natscho-hh/ai-secondbrain-stack/main/assets/social-card.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   :root {
     color-scheme: light dark;
@@ -181,16 +187,15 @@
 <body>
 <main>
   <header>
-    <h1>AI SecondBrain OS</h1>
-    <p class="tagline">A git-versioned second brain that works with ANY AI coding agent — Claude Code, Codex, Gemini CLI, Cursor, Copilot. Switch agents anytime; they all follow the same rules.</p>
+    <h1>AI SecondBrain Stack</h1>
+    <p class="tagline">A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.</p>
   </header>
 
   <nav class="agent-buttons">
     <button class="agent-toggle" type="button" data-agent="claude" aria-pressed="false">I use Claude Code</button>
     <button class="agent-toggle" type="button" data-agent="codex" aria-pressed="false">I use Codex</button>
     <button class="agent-toggle" type="button" data-agent="gemini" aria-pressed="false">I use Gemini CLI</button>
-    <button class="agent-toggle" type="button" data-agent="cursor" aria-pressed="false">I use Cursor</button>
-    <button class="agent-toggle" type="button" data-agent="copilot" aria-pressed="false">I use GitHub Copilot</button>
+    <button class="agent-toggle" type="button" data-agent="opencode" aria-pressed="false">I use OpenCode</button>
   </nav>
 
   <section class="agent-section" id="section-claude" hidden>
@@ -231,25 +236,12 @@
     <p class="closing">Your agent takes over from here.</p>
   </section>
 
-  <section class="agent-section" id="section-cursor" hidden>
-    <h2>Cursor</h2>
+  <section class="agent-section" id="section-opencode" hidden>
+    <h2>OpenCode</h2>
     <ol>
-      <li>Install Cursor: download the editor from <a href="https://cursor.com/" target="_blank" rel="noopener">cursor.com</a>, or install the standalone CLI with <code>curl https://cursor.com/install -fsS | bash</code>.</li>
-      <li>Create a new, dedicated, empty folder for your second brain and open it in Cursor (or <code>cd</code> into it before running the CLI). Don't point it at an existing project — give it a clean home of its own.</li>
-      <li>Open the agent panel (or run <code>agent</code> in the CLI), then copy the Bootstrap Prompt below and paste it in.</li>
-    </ol>
-    <p class="heads-up">Your agent may ask to access the network and write files during setup — approve it when prompted.</p>
-    <pre class="prompt" data-prompt-slot></pre>
-    <button class="copy-btn" type="button" data-copy-btn>Copy</button>
-    <p class="closing">Your agent takes over from here.</p>
-  </section>
-
-  <section class="agent-section" id="section-copilot" hidden>
-    <h2>GitHub Copilot</h2>
-    <ol>
-      <li>Install <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> if you don't already have it, then install the "GitHub Copilot" and "GitHub Copilot Chat" extensions from the VS Code Marketplace (requires an active Copilot subscription). See the <a href="https://code.visualstudio.com/docs/copilot/agents/overview" target="_blank" rel="noopener">official docs</a>.</li>
-      <li>Create a new, dedicated, empty folder for your second brain and open that folder in VS Code. Don't point it at an existing project — give it a clean home of its own.</li>
-      <li>Open Copilot Chat, switch to agent mode, then copy the Bootstrap Prompt below and paste it in.</li>
+      <li>Install OpenCode: <code>curl -fsSL https://opencode.ai/install | bash</code> (or <code>npm install -g opencode-ai</code>) — see the <a href="https://opencode.ai/docs/" target="_blank" rel="noopener">official docs</a>.</li>
+      <li>Create a new, dedicated, empty folder for your second brain and open it in your terminal. Don't point it at an existing project — give it a clean home of its own.</li>
+      <li>Launch <code>opencode</code> in that folder, then copy the Bootstrap Prompt below and paste it in.</li>
     </ol>
     <p class="heads-up">Your agent may ask to access the network and write files during setup — approve it when prompted.</p>
     <pre class="prompt" data-prompt-slot></pre>
@@ -258,7 +250,7 @@
   </section>
 
   <footer>
-    <p>Source: <a href="https://github.com/natscho-hh/ai-secondbrain-os" target="_blank" rel="noopener">github.com/natscho-hh/ai-secondbrain-os</a></p>
+    <p>Source: <a href="https://github.com/natscho-hh/ai-secondbrain-stack" target="_blank" rel="noopener">github.com/natscho-hh/ai-secondbrain-stack</a></p>
   </footer>
 </main>
 
@@ -266,7 +258,7 @@
   (function () {
     "use strict";
 
-    var BOOTSTRAP_PROMPT = "You are setting up AI SecondBrain OS for me. Clone https://github.com/natscho-hh/ai-secondbrain-os into a NEW subfolder of the current directory, read SETUP.md from it, and follow SETUP.md exactly, starting with Phase 0 (environment check). Ask me the interview questions one at a time. Do not skip the security checks.";
+    var BOOTSTRAP_PROMPT = "You are setting up AI SecondBrain Stack for me. Clone https://github.com/natscho-hh/ai-secondbrain-stack into a NEW subfolder of the current directory, read SETUP.md from it, and follow SETUP.md exactly, starting with Phase 0 (environment check). Ask me the interview questions one at a time. Do not skip the security checks.";
 
     // Fill every <pre> slot with the exact same prompt text (single source of truth).
     var promptSlots = document.querySelectorAll("[data-prompt-slot]");

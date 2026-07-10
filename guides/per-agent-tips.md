@@ -1,6 +1,6 @@
 # Per-Agent Tips
 
-Practical notes for each of the five agents this vault supports. Facts below were checked against each vendor's own docs; where something changes quickly (exact model names, fast-moving CLI flags), that's flagged so you know to double-check against the agent's own help output instead of trusting this file blindly.
+Practical notes for each of the four agents this vault supports. Facts below were checked against each vendor's own docs; where something changes quickly (exact model names, fast-moving CLI flags), that's flagged so you know to double-check against the agent's own help output instead of trusting this file blindly.
 
 ## Claude Code
 
@@ -9,7 +9,7 @@ Practical notes for each of the five agents this vault supports. Facts below wer
 - **Plan mode:** press `Shift+Tab` twice to cycle into it (status bar shows "⏸ plan mode on"); `/plan` is also available from v2.1 onward.
 - **Model switch:** `/model` — e.g. `/model opus`, `/model sonnet`, `/model haiku`; the menu also has a combined "Opus in plan mode, Sonnet otherwise" option.
 - **MCP config:** `.mcp.json` in the vault root (project-scoped, shareable via git) or `~/.claude.json` (user-scoped, managed with `claude mcp add --scope user`).
-- **Quirk:** Claude Code is the only one of these five agents that reads the vault's `skills/` folder natively — every other agent needs to be told to check it manually, per the "Skill reflex" section of `AGENTS.md`.
+- **Quirk:** Claude Code is the only one of these four agents that reads the vault's `skills/` folder natively — every other agent needs to be told to check it manually, per the "Skill reflex" section of `AGENTS.md`.
 - **Session-routine hooks (optional, recommended):** the session routines in `AGENTS.md` are prose — they work only as long as the agent remembers them. Claude Code can enforce the two critical ones mechanically with hooks in `.claude/settings.json` inside your vault:
 
   ```json
@@ -46,7 +46,7 @@ Practical notes for each of the five agents this vault supports. Facts below wer
   fi
   ```
 
-  On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. The other four agents have no hook system for this — for them the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
+  On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. Codex has its own hook system with the same JSON shape (`~/.codex/hooks.json` or project-local `.codex/hooks.json`; note Codex expects JSON on stdout — plain-text output is discarded as failed, and project-local hooks must be trusted once via `/hooks`). Gemini CLI and OpenCode have no hook system for this — for them the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
 
 ## Codex CLI
 
@@ -55,7 +55,7 @@ Practical notes for each of the five agents this vault supports. Facts below wer
 - **Plan mode:** the `/plan [goal]` slash command switches the session into plan mode; you can pair it with `--path` (target a specific directory) or `--model` flags.
 - **Model switch:** `/model` — also lets you adjust reasoning level, not just the model itself.
 - **MCP config:** `~/.codex/config.toml`, with servers under `[mcp_servers.<name>]` — note this is TOML, and the key is `mcp_servers` (underscore), not the `mcpServers` (camelCase) used by the other JSON-based agents.
-- **Quirk:** it's the one agent here configured in TOML rather than JSON, so a config snippet copied from Claude Code or Cursor needs reformatting, not just a key rename.
+- **Quirk:** it's the one agent here configured in TOML rather than JSON, so a config snippet copied from Claude Code or Gemini CLI needs reformatting, not just a key rename.
 
 ## Gemini CLI
 
@@ -66,20 +66,11 @@ Practical notes for each of the five agents this vault supports. Facts below wer
 - **MCP config:** `~/.gemini/settings.json`, servers nested under `mcpServers`.
 - **Quirk:** Gemini CLI's plan mode is stricter than the others' — it's genuinely read-only (write tools are blocked) until you explicitly approve the plan and switch to an editing mode, rather than just asking before each edit.
 
-## Cursor
+## OpenCode
 
-- **Install:** the editor is a download from <https://cursor.com/>; the standalone CLI installs with `curl https://cursor.com/install -fsS | bash` and runs as the `agent` command.
-- **Loads the rulebook via:** `AGENTS.md` directly, read natively at the project root by both the editor and the CLI — alongside `.cursor/rules` if you have any, no adapter needed.
-- **Plan mode:** `Shift+Tab` in the agent input (editor); a plan opens as an editable Markdown file you can revise before approving, and can be saved to `.cursor/plans/`.
-- **Model switch:** the model picker dropdown in the editor's agent panel; on the CLI, the `--model` flag at launch or `/model` interactively.
-- **MCP config:** `~/.cursor/mcp.json` (global, all projects) or `.cursor/mcp.json` in the project root (project-scoped).
-- **Quirk:** Cursor can fan a single prompt out to several different models at once, each running in its own git worktree, so you can compare their results side by side before picking one to keep.
-
-## GitHub Copilot
-
-- **Install:** the "GitHub Copilot" and "GitHub Copilot Chat" extensions from the VS Code Marketplace (requires an active Copilot subscription/license). Docs: <https://code.visualstudio.com/docs/copilot/agents/overview>.
-- **Loads the rulebook via:** `AGENTS.md` directly — Copilot reads it natively (the nearest `AGENTS.md` in the directory tree wins), and can also pick up `.github/copilot-instructions.md` alongside it.
-- **Plan mode:** the built-in "Plan" agent in Copilot Chat's agent picker explores the codebase, asks clarifying questions, and produces a reviewable step-by-step plan before touching any files.
-- **Model switch:** the model picker dropdown in the Chat view — there's no slash command for this; custom agents can also pin a model via the `model:` property in a `.agent.md` file.
-- **MCP config:** `.vscode/mcp.json` in the project root (workspace-scoped).
-- **Quirk:** Copilot's MCP config uses a top-level `servers` key instead of the `mcpServers` / `mcp_servers` key every other agent here uses — copying a snippet from Claude Code, Gemini, or Cursor without renaming that key is the most common mistake (also called out in `manifest/mcp.md`).
+- **Install:** `curl -fsSL https://opencode.ai/install | bash`, or `npm install -g opencode-ai` (requires Node.js). Docs: <https://opencode.ai/docs/>.
+- **Loads the rulebook via:** `AGENTS.md` directly — OpenCode reads it natively from the project root (and a global one from `~/.config/opencode/AGENTS.md`); it even falls back to `CLAUDE.md` for Claude Code compatibility.
+- **Plan mode:** press `Tab` to toggle between Build and Plan mode — the indicator sits in the lower-right corner of the TUI; Plan mode is read-only until you switch back.
+- **Model switch:** `/models` opens the interactive model picker; a default lives in `opencode.json` as `"model": "provider/model-name"`.
+- **MCP config:** `opencode.json` (project root) or `~/.config/opencode/opencode.json` (global), servers under the `mcp` key with a `type` of `local` or `remote`.
+- **Quirk:** its MCP config differs structurally from the others — the key is `mcp` (not `mcpServers`), each server declares `type: "local"`/`"remote"`, and a local server's `command` is an **array** (`["npx", "-y", "some-mcp"]`), not a command string plus `args`. OpenCode also has a native `skill` tool and a plugin system (`"plugin": [...]` in `opencode.json`).

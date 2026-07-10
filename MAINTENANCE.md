@@ -1,6 +1,6 @@
 # Maintenance
 
-This file describes the periodic upkeep routine for a vault built from AI SecondBrain OS. It keeps the rulebook, skills, and adapters current as agents and tools evolve. `AGENTS.md` points here from its `## Maintenance` section.
+This file describes the periodic upkeep routine for a vault built from AI SecondBrain Stack. It keeps the rulebook, skills, and adapters current as agents and tools evolve. `AGENTS.md` points here from its `## Maintenance` section.
 
 ## When
 
@@ -14,10 +14,10 @@ This is a conversational routine the agent runs during a normal session — noth
 **Windows Task Scheduler:**
 
 ```bash
-schtasks /create /tn "ASBOS Maintenance Reminder" /tr "echo Maintenance check due >> \"C:\path\to\vault\01 Inbox\Maintenance reminder.md\"" /sc monthly /d 1
+schtasks /create /tn "SecondBrain Stack Maintenance Reminder" /tr "echo Maintenance check due >> \"C:\path\to\vault\01 Inbox\Maintenance reminder.md\"" /sc monthly /d 1
 ```
 
-**macOS launchd** (save as `~/Library/LaunchAgents/com.asbos.maintenance-reminder.plist`, then `launchctl load` it):
+**macOS launchd** (save as `~/Library/LaunchAgents/com.secondbrain-stack.maintenance-reminder.plist`, then `launchctl load` it):
 
 ```xml
 <key>StartCalendarInterval</key>
@@ -39,7 +39,7 @@ None of these run the maintenance routine itself — they only leave a note. The
 3. **Check Obsidian plugin updates.** The agent can't update Obsidian plugins directly — remind the user to open Obsidian's Community Plugins settings and check for updates there.
 4. **Check MCP server package versions.** Compare the installed version of each configured MCP server against its latest published release and flag any that are out of date.
 5. **Check agent CLI updates.** Compare the local agent CLI version (for example `claude --version`) against the latest known release and flag if an update is available.
-6. **Template update.** Read the version comment on line 1 of the vault's local `AGENTS.md` (`<!-- asbos-template-version: 0.1.0 -->`) and compare it against the current version of `AGENTS.md` in the public `ai-secondbrain-os` repo. If the public version is newer:
+6. **Template update.** Read the version comment on line 1 of the vault's local `AGENTS.md` (`<!-- asbos-template-version: … -->` — the `asbos` key is a stable identifier from the project's original name and never changes) and compare it against the current version of `AGENTS.md` in the public `ai-secondbrain-stack` repo. If the public version is newer:
    - show what changed (changelog or diff) between the two versions,
    - offer **selective adoption** — the user picks which changes to bring in,
    - never overwrite the user's personalized content (their structure, rules, and language) as a side effect.

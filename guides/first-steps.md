@@ -8,7 +8,7 @@ An AI coding agent is a program that reads your instructions in plain language, 
 
 ## 2. Your first session
 
-Open your agent (Claude Code, Codex, Gemini CLI, Cursor, or Copilot) **inside your vault folder** — the same folder `SETUP.md` created for you. This matters: an agent only sees and touches the folder it's started in, so starting it in the vault is what keeps it scoped to your second brain.
+Open your agent (Claude Code, Codex, Gemini CLI, or OpenCode) **inside your vault folder** — the same folder `SETUP.md` created for you. This matters: an agent only sees and touches the folder it's started in, so starting it in the vault is what keeps it scoped to your second brain.
 
 Once it's running, ask it to do the **session-start routine** described in `AGENTS.md` (your agent will do this automatically most of the time, but it's fine to ask). That routine:
 

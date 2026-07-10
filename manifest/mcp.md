@@ -11,10 +11,9 @@ None of these servers are installed by the template itself. Phase 5 of `SETUP.md
 | Claude Code | `.mcp.json` in the project root (project-scoped, shareable via git) — or `~/.claude.json` (user-scoped, applies across all projects; managed via `claude mcp add --scope user`, since this file also holds other Claude Code state) |
 | Codex CLI | `~/.codex/config.toml` |
 | Gemini CLI | `~/.gemini/settings.json` |
-| Cursor | `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` in the project root (project-scoped) |
-| VS Code / Copilot | `.vscode/mcp.json` in the project root (workspace-scoped) or the user profile equivalent |
+| OpenCode | `opencode.json` in the project root (project-scoped) or `~/.config/opencode/opencode.json` (global) |
 
-Note the key-name trap: Claude Code, Codex, Cursor, and Gemini CLI all nest servers under `mcpServers` (or `mcp_servers` in TOML). VS Code's `.vscode/mcp.json` uses a top-level `servers` key instead — copying a Cursor/Claude snippet into VS Code without renaming that key is the most common mistake.
+Note the key-name trap: Claude Code and Gemini CLI nest servers under `mcpServers`, Codex uses `mcp_servers` in TOML, and OpenCode uses a top-level `mcp` key with a different per-server shape (`type: "local"`/`"remote"`, and `command` as an array instead of command + `args`) — copying a snippet between agents without adjusting key names and structure is the most common mistake.
 
 ## firecrawl
 
@@ -60,30 +59,15 @@ FIRECRAWL_API_KEY = "YOUR_API_KEY"
 }
 ```
 
-**Cursor** (`~/.cursor/mcp.json`):
+**OpenCode** (`opencode.json` — note the `mcp` key and the `command` array):
 ```json
 {
-  "mcpServers": {
+  "mcp": {
     "firecrawl": {
-      "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": {
-        "FIRECRAWL_API_KEY": "YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-**VS Code / Copilot** (`.vscode/mcp.json` — note the `servers` key, not `mcpServers`):
-```json
-{
-  "servers": {
-    "firecrawl": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": {
+      "type": "local",
+      "command": ["npx", "-y", "firecrawl-mcp"],
+      "enabled": true,
+      "environment": {
         "FIRECRAWL_API_KEY": "YOUR_API_KEY"
       }
     }
@@ -126,26 +110,14 @@ args = ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
 }
 ```
 
-**Cursor** (`~/.cursor/mcp.json`):
+**OpenCode** (`opencode.json` — note the `mcp` key and the `command` array):
 ```json
 {
-  "mcpServers": {
+  "mcp": {
     "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
-    }
-  }
-}
-```
-
-**VS Code / Copilot** (`.vscode/mcp.json` — note the `servers` key, not `mcpServers`):
-```json
-{
-  "servers": {
-    "context7": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"],
+      "enabled": true
     }
   }
 }
@@ -158,7 +130,7 @@ If no API key is available or wanted, drop the `"--api-key", "YOUR_API_KEY"` pai
 To add any MCP server not listed here:
 
 1. Find the server's own docs (README, npm page, or vendor site) for its exact `command`, `args`, and required environment variables — don't guess at the values from memory, config syntax is easy to get subtly wrong.
-2. Copy the snippet above for the target agent, keeping that agent's key name (`mcpServers` / `mcp_servers` / `servers`) and structure.
+2. Copy the snippet above for the target agent, keeping that agent's key name (`mcpServers` / `mcp_servers` / `mcp`) and structure.
 3. Replace the server name, `command`, `args`, and `env` entries with the new server's values.
 4. Put any real API key only in the local config file (or a local `.env` it references) — never in a vault note, and never committed to git.
 

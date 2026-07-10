@@ -1,10 +1,10 @@
-# AI SecondBrain OS
+# AI SecondBrain Stack
 
 <p align="center">
   <img src="assets/demo.gif" alt="Paste one prompt and your AI agent scaffolds the whole vault" width="820">
 </p>
 
-A git-versioned second brain that works with ANY AI coding agent — Claude Code, Codex, Gemini CLI, Cursor, Copilot. Switch agents anytime; they all follow the same rules.
+A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.
 
 ## Quick Start
 
@@ -12,16 +12,15 @@ A git-versioned second brain that works with ANY AI coding agent — Claude Code
    - [Claude Code](https://docs.claude.com/en/docs/claude-code)
    - [OpenAI Codex CLI](https://github.com/openai/codex)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
-   - [Cursor](https://www.cursor.com/)
-   - [GitHub Copilot](https://github.com/features/copilot)
+   - [OpenCode](https://opencode.ai/)
 2. **Open your agent in an empty, dedicated folder** — a folder you want your second brain to live in. Don't point it at an existing project; give it a clean home of its own.
 3. **Paste the Bootstrap Prompt below** into your agent and let it take over from there.
 
 ```text
-You are setting up AI SecondBrain OS for me. Clone https://github.com/natscho-hh/ai-secondbrain-os into a NEW subfolder of the current directory, read SETUP.md from it, and follow SETUP.md exactly, starting with Phase 0 (environment check). Ask me the interview questions one at a time. Do not skip the security checks.
+You are setting up AI SecondBrain Stack for me. Clone https://github.com/natscho-hh/ai-secondbrain-stack into a NEW subfolder of the current directory, read SETUP.md from it, and follow SETUP.md exactly, starting with Phase 0 (environment check). Ask me the interview questions one at a time. Do not skip the security checks.
 ```
 
-Your agent will clone the repo, run the environment checks, interview you about how you work, and assemble a vault that's personalized to you. If you'd rather follow a guided, agent-specific walkthrough instead of pasting a raw prompt, see the landing page at [natscho-hh.github.io/ai-secondbrain-os](https://natscho-hh.github.io/ai-secondbrain-os/).
+Your agent will clone the repo, run the environment checks, interview you about how you work, and assemble a vault that's personalized to you. If you'd rather follow a guided, agent-specific walkthrough instead of pasting a raw prompt, see the landing page at [natscho-hh.github.io/ai-secondbrain-stack](https://natscho-hh.github.io/ai-secondbrain-stack/).
 
 ## What you get
 
@@ -39,7 +38,7 @@ Your agent will clone the repo, run the environment checks, interview you about 
 ## Repo map
 
 ```text
-ai-secondbrain-os/
+ai-secondbrain-stack/
 ├── README.md              # this file
 ├── LICENSE                # MIT
 ├── AGENTS.md              # the single rulebook every agent follows
@@ -57,7 +56,7 @@ ai-secondbrain-os/
 │   ├── token-friendly.md  # working efficiently with an AI agent
 │   ├── security-basics.md # skill/MCP security, secrets hygiene
 │   ├── model-strategy.md  # plan with a strong model, build with a cheaper one
-│   └── per-agent-tips.md  # tips per agent (Claude Code, Codex, Gemini, Cursor, Copilot)
+│   └── per-agent-tips.md  # tips per agent (Claude Code, Codex, Gemini CLI, OpenCode)
 ├── template/               # vault scaffold, copied into the user's new vault
 │   ├── 00 Context/         # personal profile and working preferences
 │   ├── 01 Inbox/           # unsorted captures, quick notes
@@ -73,7 +72,7 @@ ai-secondbrain-os/
 ## Requirements
 
 - **Git**, for version control and syncing your vault
-- **An AI coding agent** — Claude Code, Codex, Gemini CLI, Cursor, Copilot, or similar
+- **An AI coding agent** — Claude Code, Codex, Gemini CLI, or OpenCode
 - **Obsidian** (recommended) — for browsing and editing your vault with a graph view
 - **Node.js** (optional) — needed by some skills
 - **A GitHub account** (recommended) — for hosting and syncing your own private copy of the vault

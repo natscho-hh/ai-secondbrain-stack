@@ -1,4 +1,4 @@
-<!-- asbos-template-version: 0.2.0 -->
+<!-- asbos-template-version: 0.3.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
@@ -70,11 +70,11 @@ Do not batch multiple unrelated changes into a single silent commit at the end o
 
 Before ANY task — not just complex ones — check whether a skill in this vault's `skills/` folder already covers it. Each skill is its own folder with a `SKILL.md` entry point. If a skill matches the task, read its `SKILL.md` and follow it step by step instead of improvising a fresh approach.
 
-Claude Code loads skills from this folder natively. Every other agent (Codex, Gemini CLI, Cursor, Copilot) must do this check manually: list `skills/`, scan for a matching `SKILL.md`, and read it before starting work.
+Claude Code loads skills from this folder natively. Every other agent (Codex, Gemini CLI, OpenCode) must do this check manually: list `skills/`, scan for a matching `SKILL.md`, and read it before starting work.
 
 ## Model strategy
 
-Plan and brainstorm with the strongest model available and in your agent's plan mode; implement with a cheaper model. When a plan is approved, the agent proposes the switch itself and names the exact command (Claude Code: `/model` + plan mode; Codex: `/model`; Gemini CLI: `-m` flag). Details: `guides/model-strategy.md`.
+Plan and brainstorm with the strongest model available and in your agent's plan mode; implement with a cheaper model. When a plan is approved, the agent proposes the switch itself and names the exact command (Claude Code: `/model` + plan mode; Codex: `/model`; Gemini CLI: `-m` flag; OpenCode: `Tab` toggles plan/build, `/models` switches model). Details: `guides/model-strategy.md`.
 
 ## Maintenance
 
@@ -87,8 +87,7 @@ Every agent reads its rules from the same place, `AGENTS.md`, but gets there thr
 | Agent | Entry file | Notes |
 |---|---|---|
 | Codex CLI | `AGENTS.md` | Reads this file natively — no adapter needed. |
-| Cursor | `AGENTS.md` | Reads this file natively — no adapter needed. |
-| GitHub Copilot | `AGENTS.md` | Reads this file natively — no adapter needed. |
+| OpenCode | `AGENTS.md` | Reads this file natively — no adapter needed. |
 | Claude Code | `CLAUDE.md` | Thin adapter that points to `AGENTS.md`. |
 | Gemini CLI | `GEMINI.md` | Thin adapter that points to `AGENTS.md`. |
 
