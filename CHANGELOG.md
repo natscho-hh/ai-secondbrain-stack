@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-07-11
+
+Onboarding grows up: setup now builds a personalized context profile and shows you the plan before it builds anything — and the rulebook gets an explicit branching policy.
+
+### Added
+
+- **Context profile (five files).** `00 Context/` now ships `About me`, `Audience`, `Offer`, `Writing style`, and `Branding` — the reference set the agent reads before any content or writing task. Setup Phase 2 asks the matching interview questions (one at a time, thin answers welcome) and Phase 3a fills the files with the user's real answers as prose — never invented facts.
+- **Structure preview before scaffolding.** Phase 3a now renders the planned vault as a tree with the user's real project/area/resource names and waits for an explicit OK before creating anything.
+- **Personalized starter notes.** Instead of only generic examples, setup creates a project file (from the `99 Templates` project template), an area folder + hub note, and a resource folder + hub note for every real item from the interview.
+- **`01 Inbox/Brain Dump.md`** — a permanent capture note for quick thoughts that don't warrant their own file; triage empties the list, the note stays.
+- **Branching policy** in `AGENTS.md` § Git sync: the vault always works directly on `main` (no session or feature branches — one single truth for hooks, capture channels, and every agent); rollback via commits and tags; on a rejected push `git pull --rebase origin main`, never a branch.
+
+### Changed
+
+- **Migration path (Phase 3b) offers the context profile additively.** Existing vaults are asked which of the five context files they want; existing equivalent notes are registered (or extended only with explicit OK) — nothing is overwritten, and skipping everything is a first-class choice.
+- Translation step covers the five context files and Brain Dump.
+
 ## [0.4.1] — 2026-07-11
 
 ### Fixed
@@ -82,6 +99,7 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
+[0.5.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.5.0
 [0.4.1]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.4.1
 [0.4.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.4.0
 [0.3.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.3.0

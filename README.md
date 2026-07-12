@@ -25,6 +25,7 @@ Your agent will clone the repo, run the environment checks, interview you about 
 ## What you get
 
 - A **PARA-style vault** (`00 Context` through `07 Attachments`) that separates active projects, ongoing areas, reference resources, and a daily log so nothing gets lost between sessions
+- A **personal context profile** — five files (about me, audience, offer, writing style, branding) filled from a short interview, so your agent writes in your voice and knows your world from day one
 - **Session routines** baked into the rulebook: pull the latest changes, triage the inbox, write a daily note — every time you open the vault
 - **Git sync after every change**, so your second brain is versioned, diffable, and recoverable like any codebase
 - **Portable skills** that travel with the vault instead of living in a single agent's private config

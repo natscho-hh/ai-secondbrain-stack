@@ -1,4 +1,4 @@
-<!-- asbos-template-version: 0.4.1 -->
+<!-- asbos-template-version: 0.5.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
@@ -9,7 +9,7 @@ The vault follows a PARA-style layout: nine top-level folders, each with one cle
 
 | Folder | Purpose |
 |---|---|
-| `00 Context` | Personal profile and reference material the agent should read before doing content or writing tasks — who the user is, how they work, how they write. |
+| `00 Context` | The context profile — five files (`About me`, `Audience`, `Offer`, `Writing style`, `Branding`) the agent reads before doing content or writing tasks: who the user is, who they serve, what they offer, how they write, how their brand looks. |
 | `01 Inbox` | Unprocessed capture: quick thoughts, brain dumps, anything without a home yet. |
 | `02 Projects` | Active work with a concrete goal and an end date. New projects start as a single file directly in this folder. |
 | `03 Areas` | Ongoing responsibilities with no end date — the standing parts of life and work that keep running. |
@@ -65,6 +65,8 @@ git add -A && git commit -m "short description" && git push
 ```
 
 Do not batch multiple unrelated changes into a single silent commit at the end of a session — sync as you go, so the vault stays recoverable at every step.
+
+**Branching policy:** the vault always works directly on `main` — no session branches, no feature branches. A knowledge base has no "broken intermediate state" that a branch would protect, and every routine in this rulebook (session-start pull, capture channels, any agent reading the vault) relies on one single truth. Rollback needs are covered by the commit history and by tags (set a rollback tag before risky bulk operations, e.g. `pre-cleanup-2026-07-11`). If a push is rejected (non-fast-forward — usually a parallel session or a web edit): `git pull --rebase origin main`, resolve the conflict (for binary files, the newer version wins — check timestamps), push again. Never fall back to a branch. Branches belong in code repos, and there per topic or feature — never per session.
 
 ## Skill reflex (mandatory)
 

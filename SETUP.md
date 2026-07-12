@@ -81,12 +81,17 @@ This file is a script written for you to execute, not a document for the user to
    - which **MCP servers** might help (you'll match these against `manifest/mcp.md` in Phase 5).
 
    Only ask follow-up questions where something is **genuinely unclear** — don't re-ask what they already told you. Summarize back what you inferred and let them correct it.
-3. **Ask the setup basics** (one at a time):
+3. **Build the context profile** — the five files in `00 Context/` (about me, audience, offer, writing style, branding) are the reference the agent reads before any content or writing task. You already know a lot about the user from the open question; ask ONLY what's still missing, one question at a time, and make clear that thin answers are fine — the files can grow later:
+   - **Audience:** "Who do you serve, write for, or work with? What are their typical problems or goals? (If you haven't defined this yet, that's fine — we'll write down what you know today.)"
+   - **Offer:** "What do you offer — products, services, courses, consulting? What makes it special?" (Skip if clearly not applicable, e.g. a purely personal vault — then the file keeps its placeholders.)
+   - **Writing style:** "How do you write? Formal or informal? Any hard rules — words to avoid, 'no emojis', things like that?"
+   - **Branding:** "Do you have a brand — name, colors, fonts, logo? If not, we skip this and you can add it later."
+4. **Ask the setup basics** (one at a time):
    - **Vault language** — what language should the vault and its notes be in? (This decides whether folder names and the rulebook stay English or get translated in Phase 3a.)
    - **Vault name** — what should the vault folder be called?
    - **Private GitHub repo** — do they want a private GitHub repo created for the vault (recommended for backup and sync), yes or no?
-4. **Ask experience level** with AI agents: *beginner*, *intermediate*, or *pro*. Explain that this only steers how much hand-holding Phase 6 (onboarding) gives them — it changes nothing about the vault itself.
-5. **Ask the migration question** — this decides the next phase:
+5. **Ask experience level** with AI agents: *beginner*, *intermediate*, or *pro*. Explain that this only steers how much hand-holding Phase 6 (onboarding) gives them — it changes nothing about the vault itself.
+6. **Ask the migration question** — this decides the next phase:
 
    > "Do you already use an Obsidian vault or another note collection you'd want to bring in?"
 
@@ -95,6 +100,7 @@ This file is a script written for you to execute, not a document for the user to
 
 **Success criteria:**
 - [ ] The user has answered the open question, and you have summarized back the areas/projects, candidate skills, and candidate MCPs you derived — and they've confirmed it.
+- [ ] Context-profile answers (audience, offer, writing style, branding) are recorded — including explicit "skipped" where the user had nothing yet.
 - [ ] Vault language, vault name, private-repo choice, and experience level are all recorded.
 - [ ] The migration question is answered, and you know whether the next phase is 3a or 3b.
 
@@ -106,22 +112,53 @@ This file is a script written for you to execute, not a document for the user to
 
 **Steps:**
 
-1. Create the vault folder using the **vault name** from the interview, and copy the **contents of `template/`** into it — all nine folders (`00 Context` through `07 Attachments`, plus `99 Templates`) with their example content, the root-level `template/todos.md` priority board, the root-level `template/.maintenance-log.md` file (lands at the vault root as `.maintenance-log.md`), and the `template/.obsidian/` folder (starter Obsidian settings — editor defaults, per-folder graph colors, theme selection; lands at the vault root as `.obsidian/`). **Copy hidden dotfiles and dotfolders too** — a naive "copy everything" can silently skip names starting with a dot, so verify `.maintenance-log.md` and `.obsidian/` actually made it across.
-2. **If the vault language is not English:** translate the nine folder names and the generated rule file **consistently** into the chosen language (e.g. `00 Context` → `00 Kontext`). Keep the numeric prefixes and the two-digit ordering unchanged. Apply the same translated names everywhere they appear — in the folders themselves, in every reference inside `AGENTS.md`, **and inside the copied `.obsidian/` settings** (the `attachmentFolderPath`/`newFileFolderPath` in `.obsidian/app.json` and the per-folder `query` values in `.obsidian/graph.json` all name folders by their English canon — retarget them to the translated names, or the graph colors and default paths will point at folders that no longer exist).
+1. **Show a structure preview and get an explicit OK before building anything.** Render the planned vault as a tree, using the user's **real** project, area, and resource names from the interview (normal spelling with spaces and capitals, the way it should read in Obsidian):
 
-   Also translate the **example starter notes** so the vault reads natively from the first launch: the body text of `00 Context/About me`, `01 Inbox/Welcome`, and `02 Projects/Example Project`, plus the three note templates in `99 Templates/` and the root `todos.md` board (translate the file's headings and body; keep the `{{date}}` / `{{title}}` placeholders in the templates unchanged — Obsidian fills them in). Localize their **frontmatter *values*** too — the tag words (`context`, `inbox`, `project`, …) and the `status` value (`active`) — into the chosen language, using the **same vocabulary your translated `AGENTS.md` uses** so tags and statuses match across the vault. Keep the frontmatter **field keys** (`tags`, `status`, `date`) as they are — those are conventional YAML keys, not prose. **Leave `skills/` and `guides/` in English** — they're reference material, not vault content, and many community skills are English-only anyway; the `CLAUDE.md`/`GEMINI.md` adapters also stay English (see step 4). If the language is English, skip this whole step.
-3. Write a **personalized `AGENTS.md`** into the vault: copy it from the repo root as the base, then adjust the structure section, rules, and language to match the interview results (their real areas/projects, their language). **Keep the version comment on line 1 UNCHANGED** — it must stay exactly as it is in the repo root's `AGENTS.md` (currently `<!-- asbos-template-version: 0.4.1 -->`; the `asbos` key is a stable historical identifier and never changes) so later maintenance can tell which template version this vault came from.
-4. Write both **adapters** next to it: `CLAUDE.md` and `GEMINI.md`, each a thin file that points at `AGENTS.md` (copy the three-line adapters from the repo root). These are agent entry files and stay in English regardless of vault language, because they only redirect the agent to `AGENTS.md`.
-5. Initialize version control inside the vault folder: `git init`, then make the **first commit** with everything staged (`git add -A && git commit -m "chore: initial vault from ai-secondbrain-stack template"`).
-6. **If the user wanted a private GitHub repo** (from the interview) and the GitHub CLI is available: create and push it with
+   ```text
+   MyVault/
+   ├── AGENTS.md                ← the rulebook (+ CLAUDE.md / GEMINI.md adapters)
+   ├── todos.md                 ← priority board
+   ├── 00 Context/              ← about me, audience, offer, writing style, branding
+   ├── 01 Inbox/
+   ├── 02 Projects/
+   │   ├── [Project 1].md
+   │   └── [Project 2].md
+   ├── 03 Areas/
+   │   ├── [Area 1]/
+   │   └── [Area 2]/
+   ├── 04 Resources/
+   │   └── [Topic 1]/
+   ├── 05 Daily Notes/
+   ├── 06 Archive/
+   ├── 07 Attachments/
+   └── 99 Templates/
+   ```
+
+   Ask: *"Does this look right? Anything to change, add, or remove?"* Work in any changes, show the updated tree, and only continue once the user confirms.
+2. Create the vault folder using the **vault name** from the interview, and copy the **contents of `template/`** into it — all nine folders (`00 Context` through `07 Attachments`, plus `99 Templates`) with their example content, the root-level `template/todos.md` priority board, the root-level `template/.maintenance-log.md` file (lands at the vault root as `.maintenance-log.md`), and the `template/.obsidian/` folder (starter Obsidian settings — editor defaults, per-folder graph colors, theme selection; lands at the vault root as `.obsidian/`). **Copy hidden dotfiles and dotfolders too** — a naive "copy everything" can silently skip names starting with a dot, so verify `.maintenance-log.md` and `.obsidian/` actually made it across.
+3. **If the vault language is not English:** translate the nine folder names and the generated rule file **consistently** into the chosen language (e.g. `00 Context` → `00 Kontext`). Keep the numeric prefixes and the two-digit ordering unchanged. Apply the same translated names everywhere they appear — in the folders themselves, in every reference inside `AGENTS.md`, **and inside the copied `.obsidian/` settings** (the `attachmentFolderPath`/`newFileFolderPath` in `.obsidian/app.json` and the per-folder `query` values in `.obsidian/graph.json` all name folders by their English canon — retarget them to the translated names, or the graph colors and default paths will point at folders that no longer exist).
+
+   Also translate the **example starter notes** so the vault reads natively from the first launch: the body text of all five `00 Context/` files (`About me`, `Audience`, `Offer`, `Writing style`, `Branding`), `01 Inbox/Welcome`, `01 Inbox/Brain Dump`, and `02 Projects/Example Project`, plus the three note templates in `99 Templates/` and the root `todos.md` board (translate the file's headings and body; keep the `{{date}}` / `{{title}}` placeholders in the templates unchanged — Obsidian fills them in). Localize their **frontmatter *values*** too — the tag words (`context`, `inbox`, `project`, …) and the `status` value (`active`) — into the chosen language, using the **same vocabulary your translated `AGENTS.md` uses** so tags and statuses match across the vault. Keep the frontmatter **field keys** (`tags`, `status`, `date`) as they are — those are conventional YAML keys, not prose. **Leave `skills/` and `guides/` in English** — they're reference material, not vault content, and many community skills are English-only anyway; the `CLAUDE.md`/`GEMINI.md` adapters also stay English (see step 4). If the language is English, skip this whole step.
+4. **Fill the context profile with the interview answers.** Write the user's real answers into the five `00 Context/` files (`About me`, `Audience`, `Offer`, `Writing style`, `Branding`), replacing the italicized examples. Write full prose sentences, not bullet fragments or placeholder phrases — the files should feel useful on day one. Where the user had little or nothing to say, write one short honest sentence and leave room to grow; never invent facts to fill space.
+5. **Create personalized starter notes** from the interview instead of leaving only the generic examples:
+   - one `.md` file per real **project**, directly under `02 Projects/`, created from `99 Templates/Project.md` (goal filled in from what the user said, next step left for them),
+   - one folder per real **area** under `03 Areas/`, each with a same-named hub note (`03 Areas/Health/Health.md`) carrying a one-line description and frontmatter (`tags: [area, …]`, `status: active`),
+   - one folder per real **resource topic** under `04 Resources/`, each with a same-named hub note for links and notes to accumulate.
+   Keep `02 Projects/Example Project.md` only if the user has no projects yet; otherwise remove it with their OK so the vault starts clean.
+6. Write a **personalized `AGENTS.md`** into the vault: copy it from the repo root as the base, then adjust the structure section, rules, and language to match the interview results (their real areas/projects, their language). **Keep the version comment on line 1 UNCHANGED** — it must stay exactly as it is in the repo root's `AGENTS.md` (currently `<!-- asbos-template-version: 0.5.0 -->`; the `asbos` key is a stable historical identifier and never changes) so later maintenance can tell which template version this vault came from.
+7. Write both **adapters** next to it: `CLAUDE.md` and `GEMINI.md`, each a thin file that points at `AGENTS.md` (copy the three-line adapters from the repo root). These are agent entry files and stay in English regardless of vault language, because they only redirect the agent to `AGENTS.md`.
+8. Initialize version control inside the vault folder: `git init`, then make the **first commit** with everything staged (`git add -A && git commit -m "chore: initial vault from ai-secondbrain-stack template"`).
+9. **If the user wanted a private GitHub repo** (from the interview) and the GitHub CLI is available: create and push it with
    ```bash
    gh repo create <vault-name> --private --source . --push
    ```
    If `gh` isn't available, tell the user how to create the private repo manually in the GitHub web UI and add it as a remote, or skip and note it as a "later" step. Never make the repo public.
 
 **Success criteria:**
-- [ ] The vault folder exists, named after the vault, containing all nine folders with example content, plus `todos.md`, `.maintenance-log.md`, and the `.obsidian/` settings folder at the vault root.
-- [ ] If a non-English language was chosen, folder names, `AGENTS.md`, the `.obsidian/` settings, and the three example notes (body + frontmatter tag/status values) are fully and consistently translated; `skills/` and `guides/` are left in English; version comment line is untouched.
+- [ ] The user saw the structure tree with their real project/area/resource names and explicitly confirmed it before anything was created.
+- [ ] The vault folder exists, named after the vault, containing all nine folders, plus `todos.md`, `.maintenance-log.md`, and the `.obsidian/` settings folder at the vault root.
+- [ ] The five `00 Context/` files are filled with the user's real answers (prose, no invented facts); personalized starter notes exist for their projects, areas, and resource topics.
+- [ ] If a non-English language was chosen, folder names, `AGENTS.md`, the `.obsidian/` settings, and the starter notes (body + frontmatter tag/status values) are fully and consistently translated; `skills/` and `guides/` are left in English; version comment line is untouched.
 - [ ] `AGENTS.md` + `CLAUDE.md` + `GEMINI.md` are present in the vault, personalized where appropriate.
 - [ ] `git init` and a first commit are done; if requested and possible, a private GitHub repo exists and has been pushed to.
 
@@ -137,13 +174,18 @@ This file is a script written for you to execute, not a document for the user to
 2. **Analyze the existing structure.** Read the vault as it actually is: its folders, how notes are organized, naming conventions, and — importantly — any **installed plugins or skills** already in use (Obsidian plugins, an existing `skills/` folder, agent config files). Build an accurate picture of what's there before proposing anything.
 3. **Present a mapping table — as a recommendation, not a command.** Show the user a table comparing their vault to the AI SecondBrain Stack layout, with columns like: *existing folder → recommended place*, *what's missing* (parts of the PARA layout they don't have yet), *what already fits* (folders that already map cleanly), and *what stays different on purpose* (structure of theirs you'd deliberately keep as-is). **Recommend a change only where it adds real value.** If their structure already works, say so and leave it. Make clear nothing happens until they choose.
 4. **Apply ONLY what the user confirms, item by item.** Go through the mapping one row at a time and act only on the rows the user approves. Existing notes, their `[[wikilinks]]`, and their installed skills **stay intact** — you do not rewrite links or move notes wholesale. Any skills you detected in step 2 are **registered** (recorded in the vault's manifest/rulebook so agents know they exist), **not reinstalled** — don't re-download or overwrite something they already have. **Never overwrite the user's existing `.obsidian/` settings** — those are their own appearance, hotkeys, and plugin configuration. If they don't have per-folder graph colors yet and want the template's, you may *offer* to add the `colorGroups` from `template/.obsidian/graph.json` (retargeted to their real folder names) to their existing `graph.json` — but only additively, and only if they say yes.
-5. **Write `AGENTS.md` + adapters adapted to the REAL structure.** Generate `AGENTS.md` (plus the `CLAUDE.md` and `GEMINI.md` adapters) describing the vault **as it actually is after the confirmed changes** — the user's real folder names and organization — not the idealized template layout. Keep the version comment line from the repo root's `AGENTS.md` on line 1 (currently `<!-- asbos-template-version: 0.4.1 -->`) so maintenance can track the template version. Commit the result.
-6. **Create `.maintenance-log.md` at the vault root**, if it doesn't already exist — the migration path copies no `template/` content, so this file (which `AGENTS.md`'s Maintenance section and `MAINTENANCE.md` both expect to find) is never created otherwise. Give it the same initial shape as the template's: a `last-check:` line dated to today, plus the comment line `<!-- updated by the maintenance routine -->`. Commit the result.
+5. **Offer the context profile — additively, never destructively.** Check what the vault already has: existing notes that serve as a personal profile, audience description, style guide, or brand doc (whatever they're called). Then ask which of the five context files (`About me`, `Audience`, `Offer`, `Writing style`, `Branding`) the user wants, and for each one:
+   - if an equivalent note **already exists**, register it as the context file (or, only with the user's explicit OK, extend it with missing sections) — **never overwrite or replace their existing content**;
+   - if nothing exists, run the matching interview question from Phase 2 step 3 and create the file in their context folder, filled with their answer.
+   The user can skip any or all of these — a migration must work without adding a single file they didn't ask for.
+6. **Write `AGENTS.md` + adapters adapted to the REAL structure.** Generate `AGENTS.md` (plus the `CLAUDE.md` and `GEMINI.md` adapters) describing the vault **as it actually is after the confirmed changes** — the user's real folder names and organization — not the idealized template layout. Keep the version comment line from the repo root's `AGENTS.md` on line 1 (currently `<!-- asbos-template-version: 0.5.0 -->`) so maintenance can track the template version. Commit the result.
+7. **Create `.maintenance-log.md` at the vault root**, if it doesn't already exist — the migration path copies no `template/` content, so this file (which `AGENTS.md`'s Maintenance section and `MAINTENANCE.md` both expect to find) is never created otherwise. Give it the same initial shape as the template's: a `last-check:` line dated to today, plus the comment line `<!-- updated by the maintenance routine -->`. Commit the result.
 
 **Success criteria:**
 - [ ] A git checkpoint of the pre-migration state exists (commit made, or repo initialized + committed).
 - [ ] The user has seen a mapping table framed as recommendations, and only approved rows were applied.
 - [ ] All existing notes, wikilinks, and installed skills are intact; detected skills are registered, not reinstalled.
+- [ ] The context profile was offered file by file; existing equivalents were registered (or extended only with explicit OK), nothing was overwritten, and skipped files were simply skipped.
 - [ ] `AGENTS.md` + adapters describe the vault's real structure and carry the unchanged version comment; changes are committed.
 - [ ] `.maintenance-log.md` exists at the vault root with a `last-check` date and the maintenance-routine comment line.
 
