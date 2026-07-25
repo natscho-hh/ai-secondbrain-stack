@@ -23,6 +23,7 @@ First stable release. The installer, rulebook, skills, MCP wiring, and maintenan
 - **`guides/backup-strategy.md`** — the reasoning behind that phase: portability and recovery treated as two separate problems, the four-hour rule for deciding what is worth backing up, the sync-folder trap that silently corrupts deduplicating repositories, a target comparison that starts from what the user already pays for, client-side encryption with key custody, a mandatory credential scan before the first run, and the two verification mechanisms (a restore drill that can fail, and a watchdog that runs off the machine).
 - **Claude Code plugin step in the maintenance routine** (the routine is now 9 steps), including the fully qualified `name@marketplace` fallback for when the short form doesn't resolve.
 - **Windows notes in `guides/per-agent-tips.md`** — why patched Node refuses `.cmd` shims after the CVE-2024-27980 fix, what `.DELETE.<hash>` leftovers actually indicate, and why long paths inside synced folders break.
+- **A demo video on the landing page.** Seventy-five seconds covering the one-paste bootstrap, the interview, skills, keys staying outside the vault, backup planning, and maintenance, with English captions.
 
 ### Changed
 
@@ -30,6 +31,11 @@ First stable release. The installer, rulebook, skills, MCP wiring, and maintenan
 - **One canonical skill source, generated mirrors.** Hand-maintained duplicates drift, and the copy you are not looking at is the one an agent loads.
 - **Manifest drops skill counts**, which were already wrong.
 - **`.gitignore` excludes `.superpowers/`** — planning-tool scratch artifacts (briefs, reports, diffs) that were never part of the shipped template.
+- **Landing page rebuilt** around the demo video, with the four agent paths kept as they were.
+
+### Removed
+
+- `assets/demo.gif`, superseded by the demo video. Anything hotlinking that file will 404.
 
 ## [0.5.0] — 2026-07-12
 

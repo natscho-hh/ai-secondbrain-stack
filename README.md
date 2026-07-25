@@ -2,7 +2,7 @@
 
 [![Watch the demo](docs/assets/demo-poster.png)](https://natscho-hh.github.io/ai-secondbrain-stack/)
 
-*75 seconds, from an empty folder to a working vault.*
+*A 75-second demo: from an empty folder to a working vault.*
 
 A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.
 
@@ -67,7 +67,8 @@ ai-secondbrain-stack/
 │   ├── 04 Resources/       # reference knowledge and documentation
 │   ├── 05 Daily Notes/     # YYYY-MM-DD.md daily log
 │   ├── 06 Archive/         # completed projects and inactive areas
-│   └── 07 Attachments/     # images, PDFs, and other media
+│   ├── 07 Attachments/     # images, PDFs, and other media
+│   └── 99 Templates/       # Obsidian note templates (daily note, project, inbox capture)
 └── docs/                  # GitHub Pages landing page
 ```
 
