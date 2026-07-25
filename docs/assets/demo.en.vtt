@@ -1,0 +1,81 @@
+WEBVTT
+
+1
+00:00:00.050 --> 00:00:02.912
+Your AI agent is brilliant for an hour.
+
+2
+00:00:02.912 --> 00:00:08.425
+Then the session ends, and it forgets your projects, your decisions, and how you like things done.
+
+3
+00:00:08.425 --> 00:00:10.000
+Every single time.
+
+4
+00:00:10.000 --> 00:00:12.537
+You end up explaining it all over again.
+
+5
+00:00:12.650 --> 00:00:15.700
+AI SecondBrain Stack fixes that with a folder.
+
+6
+00:00:15.700 --> 00:00:21.500
+A git-versioned second brain your agent reads at the start of every session and writes back to at the end.
+
+7
+00:00:21.500 --> 00:00:23.850
+Four agents, one rulebook.
+
+8
+00:00:23.850 --> 00:00:28.250
+No dashboard to learn, no subscription, just files you already own.
+
+9
+00:00:28.370 --> 00:00:30.245
+Setup is one paste.
+
+10
+00:00:30.245 --> 00:00:40.482
+You hand the bootstrap prompt to your agent and it becomes the installer: it checks your environment, interviews you about what you actually work on, and builds the structure around your answers.
+
+11
+00:00:40.482 --> 00:00:42.307
+No wizard to click through.
+
+12
+00:00:42.307 --> 00:00:44.307
+Your agent does the setup work.
+
+13
+00:00:44.426 --> 00:00:49.201
+Then it wires up the skills you keep repeating, and only the servers you asked for.
+
+14
+00:00:49.201 --> 00:00:52.401
+Your API keys stay in your agent's own config.
+
+15
+00:00:52.401 --> 00:00:55.488
+Never in a note, never in a commit.
+
+16
+00:00:55.488 --> 00:01:00.776
+It is a rule the installer states up front and repeats at every step that touches a key.
+
+17
+00:01:00.890 --> 00:01:04.790
+It can plan your backup, and it keeps itself current every month.
+
+18
+00:01:04.790 --> 00:01:07.940
+Everything is reversible, because everything is git.
+
+19
+00:01:07.940 --> 00:01:12.752
+No lock-in, no proprietary format, nothing to migrate later.
+
+20
+00:01:12.752 --> 00:01:14.640
+Start with one paste.

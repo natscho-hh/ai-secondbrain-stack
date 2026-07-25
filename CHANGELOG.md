@@ -4,10 +4,38 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-07-25
+
+First stable release. The installer, rulebook, skills, MCP wiring, and maintenance routine have been in use long enough to stop moving, and 1.0 adds the two things that were missing: skills that every supported agent can actually find, and an optional backup plan.
+
+### Fixed
+
+- **Claude Code now finds the vault's skills.** The installer previously copied skills to `skills/` and mirrored them only to `.agents/skills/` for Codex, while claiming Claude Code read the canonical folder directly. It doesn't — it discovers project skills in `.claude/skills/`. Setup now generates both mirrors from the one canonical source, and the maintenance routine refreshes both.
+- **New vaults no longer inherit stale dates.** `todos.md`, `.maintenance-log.md`, the five `00 Context/` files, `01 Inbox/Welcome.md`, `01 Inbox/Brain Dump.md`, and `02 Projects/Example Project.md` shipped with dates hardcoded at template-authoring time, which made the monthly maintenance check misfire immediately in a fresh vault. They now carry `YYYY-MM-DD` placeholders that `SETUP.md` Phase 3a stamps with the install date.
+- **`Offer.md` no longer contradicts the installer** about whether placeholder text may stay — it now asks for one honest sentence when there's nothing to sell yet, instead of telling the user to leave the italicized examples in place.
+- **`Welcome.md` carries the frontmatter the rulebook requires** (`status` and `date`, alongside its existing `tags`), so a fresh vault passes its own health check.
+- **`vault-health` checks for missing `status` and `date`**, not just missing `tags`.
+- **Corrected agent facts in `guides/per-agent-tips.md`.** The hooks matrix claimed Gemini CLI and OpenCode have no hook system at all; both actually have event mechanisms (Gemini CLI's `SessionStart`/`SessionEnd` hooks, OpenCode's plugin event subscriptions), but neither can block session start or exit the way Claude Code's and Codex's hooks can — the guide now says so explicitly rather than implying the four agents are equivalent here. Several other vendor claims (install methods, Codex's plan-mode command, OpenCode's rulebook lookup order, Codex's skill-discovery gotchas) were re-verified against live docs, and three redirecting links (Claude Code's and Codex's install docs, in `README.md` and `guides/per-agent-tips.md`) were fixed.
+
 ### Added
 
 - **Backup planning as an optional setup phase (5b).** Git protects the vault, but not what `.gitignore` excludes: API keys, media, agent memory, attachments. The phase asks which storage the user already owns and which accounts they could sign into on a borrowed device, then derives a design from those two answers. It produces a written plan and a recovery runbook rather than scripts, and can be declined without friction.
 - **`guides/backup-strategy.md`** — the reasoning behind that phase: portability and recovery treated as two separate problems, the four-hour rule for deciding what is worth backing up, the sync-folder trap that silently corrupts deduplicating repositories, a target comparison that starts from what the user already pays for, client-side encryption with key custody, a mandatory credential scan before the first run, and the two verification mechanisms (a restore drill that can fail, and a watchdog that runs off the machine).
+- **Claude Code plugin step in the maintenance routine** (the routine is now 9 steps), including the fully qualified `name@marketplace` fallback for when the short form doesn't resolve.
+- **Windows notes in `guides/per-agent-tips.md`** — why patched Node refuses `.cmd` shims after the CVE-2024-27980 fix, what `.DELETE.<hash>` leftovers actually indicate, and why long paths inside synced folders break.
+- **A demo video on the landing page.** Seventy-five seconds covering the one-paste bootstrap, the interview, skills, keys staying outside the vault, backup planning, and maintenance, with English captions.
+
+### Changed
+
+- **Skill updates are verified against content, not status messages.** A manager reports what its lock file recorded at install time, which says nothing about the files on disk now.
+- **One canonical skill source, generated mirrors.** Hand-maintained duplicates drift, and the copy you are not looking at is the one an agent loads.
+- **Manifest drops skill counts**, which were already wrong.
+- **`.gitignore` excludes `.superpowers/`** — planning-tool scratch artifacts (briefs, reports, diffs) that were never part of the shipped template.
+- **Landing page rebuilt** around the demo video, with the four agent paths kept as they were.
+
+### Removed
+
+- `assets/demo.gif`, superseded by the demo video. Anything hotlinking that file will 404.
 
 ## [0.5.0] — 2026-07-12
 
@@ -106,6 +134,7 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
+[1.0.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.0.0
 [0.5.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.5.0
 [0.4.1]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.4.1
 [0.4.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.4.0

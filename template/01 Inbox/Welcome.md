@@ -1,5 +1,7 @@
 ---
 tags: [inbox]
+status: active
+date: YYYY-MM-DD
 ---
 
 # Welcome to your inbox

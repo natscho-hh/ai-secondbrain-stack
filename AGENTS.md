@@ -1,4 +1,4 @@
-<!-- asbos-template-version: 0.5.0 -->
+<!-- asbos-template-version: 1.0.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
@@ -19,7 +19,7 @@ The vault follows a PARA-style layout: nine top-level folders, each with one cle
 | `07 Attachments` | Images, PDFs, and other media referenced from notes. |
 | `99 Templates` | Obsidian note templates (daily note, project, inbox capture) — use them when creating new notes so frontmatter stays consistent. |
 
-Two files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work), and the agent rule files (`AGENTS.md` and its adapters).
+A handful of files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work); `.maintenance-log.md`, the maintenance routine's record of its last run; and the agent rule files (`AGENTS.md` and its adapters).
 
 ## Vault rules
 
@@ -72,7 +72,7 @@ Do not batch multiple unrelated changes into a single silent commit at the end o
 
 Before ANY task — not just complex ones — check whether a skill in this vault's `skills/` folder already covers it. Each skill is its own folder with a `SKILL.md` entry point. If a skill matches the task, read its `SKILL.md` and follow it step by step instead of improvising a fresh approach.
 
-Claude Code loads skills from this folder natively. Codex also discovers skills natively, but from `.agents/skills/` — keep that folder as a mirror of `skills/` (setup creates it; refresh it whenever a skill is added or updated). Gemini CLI and OpenCode do the check manually: list `skills/`, scan for a matching `SKILL.md`, and read it before starting work.
+Skills live in `skills/`, the canonical source. Claude Code discovers them from `.claude/skills/` and Codex from `.agents/skills/`, so setup generates both folders as mirrors of `skills/` — refresh both whenever a skill is added or updated. Gemini CLI and OpenCode have no native project-skill directory; they read `skills/` because this rulebook points them there, doing the check manually: list `skills/`, scan for a matching `SKILL.md`, and read it before starting work.
 
 One formatting rule matters for native discovery: a `SKILL.md`'s YAML frontmatter (`name` + `description`) must start on **line 1** — a heading or blank line above it makes Codex reject the whole skill.
 

@@ -1,15 +1,15 @@
 # AI SecondBrain Stack
 
-<p align="center">
-  <img src="assets/demo.gif" alt="Paste one prompt and your AI agent scaffolds the whole vault" width="820">
-</p>
+[![Watch the demo](docs/assets/demo-poster.png)](https://natscho-hh.github.io/ai-secondbrain-stack/)
+
+*A 75-second demo: from an empty folder to a working vault.*
 
 A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.
 
 ## Quick Start
 
 1. **Install an AI coding agent.** Any of the following will work:
-   - [Claude Code](https://docs.claude.com/en/docs/claude-code)
+   - [Claude Code](https://code.claude.com/docs)
    - [OpenAI Codex CLI](https://github.com/openai/codex)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
    - [OpenCode](https://opencode.ai/)
@@ -67,7 +67,8 @@ ai-secondbrain-stack/
 │   ├── 04 Resources/       # reference knowledge and documentation
 │   ├── 05 Daily Notes/     # YYYY-MM-DD.md daily log
 │   ├── 06 Archive/         # completed projects and inactive areas
-│   └── 07 Attachments/     # images, PDFs, and other media
+│   ├── 07 Attachments/     # images, PDFs, and other media
+│   └── 99 Templates/       # Obsidian note templates (daily note, project, inbox capture)
 └── docs/                  # GitHub Pages landing page
 ```
 

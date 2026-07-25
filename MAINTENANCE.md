@@ -35,16 +35,28 @@ None of these run the maintenance routine itself — they only leave a note. The
 ## Routine
 
 1. **Commit the vault first.** Before touching anything, make sure the working tree is clean: `git add -A && git commit -m "chore: pre-maintenance checkpoint"` (skip if there's nothing to commit). This gives every later step a safe rollback point.
-2. **Update skills.** For each skill folder that has a git source (see `manifest/skills.md` for provenance), pull or re-fetch the latest version. For any file that changed, re-run the security gate from `SETUP.md` Phase 4 before accepting the update — the same three checks used when a skill is first installed (public repo with real usage, read the files for anything that touches outside the vault, one-sentence summary + explicit OK). Afterwards, refresh the `.agents/skills/` mirror so Codex sees the same skill versions as everyone else.
+2. **Update skills.** For each skill folder that has a git source (see `manifest/skills.md` for provenance), pull or re-fetch the latest version. For any file that changed, re-run the security gate from `SETUP.md` Phase 4 before accepting the update — the same three checks used when a skill is first installed (public repo with real usage, read the files for anything that touches outside the vault, one-sentence summary + explicit OK). Afterwards, refresh both the `.claude/skills/` and `.agents/skills/` mirrors so Claude Code and Codex see the same skill versions as everyone else.
+
+   **Verify the content, not the status message.** Skill managers report state from their own lock file, which records what upstream looked like at install time — not what is on your disk now. After an update, diff the actual `SKILL.md` against upstream before believing "up to date". This bites hardest with mirrors, where one copy gets refreshed and the other silently does not.
+
+   **One canonical source, generated mirrors.** A skill lives once, in `skills/`; `.claude/skills/` and `.agents/skills/` are copies generated from it. Never hand-edit a mirror, and never keep a second independently maintained copy of a skill that a tool already installs globally — pick the location the tool maintains and generate from there. Two hand-maintained copies drift, and the one you are not looking at is always the one an agent loads.
 3. **Check Obsidian plugin updates.** The agent can't update Obsidian plugins directly — remind the user to open Obsidian's Community Plugins settings and check for updates there.
 4. **Check MCP server package versions.** Compare the installed version of each configured MCP server against its latest published release and flag any that are out of date.
 5. **Check agent CLI updates.** Compare the local agent CLI version (for example `claude --version`) against the latest known release and flag if an update is available.
-6. **Template update.** Read the version comment on line 1 of the vault's local `AGENTS.md` (`<!-- asbos-template-version: … -->` — the `asbos` key is a stable identifier from the project's original name and never changes) and compare it against the current version of `AGENTS.md` in the public `ai-secondbrain-stack` repo. If the public version is newer:
+6. **Check Claude Code plugin updates** (skip if the user doesn't use Claude Code). Plugins update separately from the CLI and from skills:
+
+   ```bash
+   claude plugin marketplace update
+   claude plugin update <name>
+   ```
+
+   If that fails with `Plugin not found` even though `claude plugin list` shows the plugin, pass the fully qualified id instead: `claude plugin update <name>@<marketplace>`. Both forms are documented; the short one is not reliable across versions when a name is ambiguous.
+7. **Template update.** Read the version comment on line 1 of the vault's local `AGENTS.md` (`<!-- asbos-template-version: … -->` — the `asbos` key is a stable identifier from the project's original name and never changes) and compare it against the current version of `AGENTS.md` in the public `ai-secondbrain-stack` repo. If the public version is newer:
    - show what changed (changelog or diff) between the two versions,
    - offer **selective adoption** — the user picks which changes to bring in,
    - never overwrite the user's personalized content (their structure, rules, and language) as a side effect.
-7. **Smoke test.** Run one full session-start routine end to end to confirm everything still works after the updates above.
-8. **Close out.** Write today's date into `.maintenance-log.md`, give the user a short report of what was checked and changed, then commit: `git add -A && git commit -m "chore: maintenance check YYYY-MM-DD"`.
+8. **Smoke test.** Run one full session-start routine end to end to confirm everything still works after the updates above.
+9. **Close out.** Write today's date into `.maintenance-log.md`, give the user a short report of what was checked and changed, then commit: `git add -A && git commit -m "chore: maintenance check YYYY-MM-DD"`.
 
 ## Safety
 

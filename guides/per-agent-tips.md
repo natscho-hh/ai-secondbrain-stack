@@ -7,22 +7,30 @@ Practical notes for each of the four agents this vault supports. Facts below wer
 | | Claude Code | Codex CLI | Gemini CLI | OpenCode |
 |---|---|---|---|---|
 | **Rulebook entry** | `CLAUDE.md` adapter | `AGENTS.md` (native) | `GEMINI.md` adapter | `AGENTS.md` (native) |
-| **Skill discovery** | `skills/` (native) | `.agents/skills/` (native — keep it a mirror of `skills/`) | manual check of `skills/` | manual check of `skills/` |
-| **Session hooks** | `.claude/settings.json` | `hooks.json` (global `~/.codex/` or project `.codex/`) | — | — |
+| **Skill discovery** | `.claude/skills/` (native — mirror of `skills/`) | `.agents/skills/` (native — mirror of `skills/`) | reads `skills/` via the `GEMINI.md` adapter | reads `skills/` via `AGENTS.md`, plus a native `skill` tool |
+| **Session hooks** | `.claude/settings.json` | `hooks.json` (global `~/.codex/` or project `.codex/`) | hooks configured per the Gemini CLI hooks reference | plugin event subscriptions (`"plugin": [...]` in `opencode.json`) |
 | **MCP config** | `.mcp.json` / `~/.claude.json` | `~/.codex/config.toml` (`mcp_servers`, TOML) | `~/.gemini/settings.json` (`mcpServers`) | `opencode.json` (`mcp` key) |
 | **Plan mode** | `Shift+Tab` / `/plan` | `/plan` | `Shift+Tab` / `/plan` / `--approval-mode=plan` | `Tab` toggle |
 | **Model switch** | `/model` | `/model` | `-m` flag / `/model` | `/models` |
 
 The rows are the portable/vendor-specific split in one view: the rulebook, skills, guides, and vault content are shared; hook wiring and MCP config files are per-agent and never leave the agent's own config.
 
+## Windows notes
+
+**Point tools at the real binary, not the `.cmd` shim.** The security fix for CVE-2024-27980 made patched Node reject `.cmd` and `.bat` files passed directly to `child_process.spawn()` or `spawnSync()` with `shell: false` — you get a bare `EINVAL`. Anything that launches an agent CLI as a child process hits this if it targets the npm-generated shim. Point it at the real executable, or at `node.exe` with the package's JavaScript entrypoint. `shell: true` also works, but only use it with fully controlled arguments: it re-opens exactly the command-injection class the fix closed.
+
+**`.DELETE.<hash>` leftovers mean an interrupted npm operation.** Files with that suffix under `node_modules` are the remains of a rename or cleanup that npm did not finish. Treat them as a diagnosis, not a diagnosis-and-cure: check the npm log and `npm ls` first. If platform-specific optional packages are genuinely missing, `npm install --include=optional` refetches them. If the tree is inconsistent in other ways, delete `node_modules` and reinstall — slower, but it actually resolves the state.
+
+**Path length and synced folders.** Windows truncates at 260 characters unless long paths are enabled, and nested `node_modules` inside a synced folder reaches that quickly. Keep vaults and repos out of sync-client folders anyway: a sync client rewriting files under a running tool is its own category of bug.
+
 ## Claude Code
 
-- **Install:** native installer — `curl -fsSL https://claude.ai/install.sh | bash` — is the current recommended path (auto-updating, no Node dependency). The older `npm install -g @anthropic-ai/claude-code` still works but is being phased out in favor of the native installer. Docs: <https://docs.claude.com/en/docs/claude-code>.
+- **Install:** native installer — `curl -fsSL https://claude.ai/install.sh | bash` — is the current recommended path (auto-updating, no Node dependency). `npm install -g @anthropic-ai/claude-code` remains a fully documented alternative, alongside Homebrew, WinGet, and Linux package managers (apt/dnf/apk). Docs: <https://code.claude.com/docs>.
 - **Loads the rulebook via:** the `CLAUDE.md` adapter in your vault root, which points to `AGENTS.md`.
 - **Plan mode:** press `Shift+Tab` twice to cycle into it (status bar shows "⏸ plan mode on"); `/plan` is also available from v2.1 onward.
 - **Model switch:** `/model` — e.g. `/model opus`, `/model sonnet`, `/model haiku`; the menu also has a combined "Opus in plan mode, Sonnet otherwise" option.
 - **MCP config:** `.mcp.json` in the vault root (project-scoped, shareable via git) or `~/.claude.json` (user-scoped, managed with `claude mcp add --scope user`).
-- **Quirk:** Claude Code reads the vault's `skills/` folder natively. Codex discovers skills natively too, but only from `.agents/skills/` (the mirror, see the Codex section); Gemini CLI and OpenCode need to be told to check `skills/` manually, per the "Skill reflex" section of `AGENTS.md`.
+- **Quirk:** Claude Code discovers skills natively only from `.claude/skills/`, not the vault's `skills/` folder directly — `skills/` is the canonical source, `.claude/skills/` a generated mirror (set up in `SETUP.md` Phase 4). Codex works the same way, from its own `.agents/skills/` mirror (see the Codex section). Gemini CLI and OpenCode have no native project-skill directory and need to be told to check `skills/` manually, per the "Skill reflex" section of `AGENTS.md`.
 - **Session-routine hooks (optional, recommended):** the session routines in `AGENTS.md` are prose — they work only as long as the agent remembers them. Claude Code can enforce the two critical ones mechanically with hooks in `.claude/settings.json` inside your vault:
 
   ```json
@@ -59,16 +67,16 @@ The rows are the portable/vendor-specific split in one view: the rulebook, skill
   fi
   ```
 
-  On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. Codex has its own hook system with the same JSON shape (`~/.codex/hooks.json` or project-local `.codex/hooks.json`; note Codex expects JSON on stdout — plain-text output is discarded as failed, and project-local hooks must be trusted once via `/hooks`). Gemini CLI and OpenCode have no hook system for this — for them the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
+  On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. Codex has its own hook system with the same JSON shape (`~/.codex/hooks.json` or project-local `.codex/hooks.json`; note Codex expects JSON on stdout — plain-text output is discarded as failed, and project-local hooks must be trusted once via `/hooks`). Gemini CLI now has a hooks system too (`SessionStart` / `SessionEnd` events configured in `settings.json` — see the [Gemini CLI hooks reference](https://geminicli.com/docs/hooks/reference/)), but both events are advisory only: the CLI never waits on them and ignores their `continue`/`decision` fields, so they can't block startup or exit the way the git-sync guard above needs. OpenCode's plugin system (`"plugin": [...]` in `opencode.json` — see the [OpenCode plugin docs](https://opencode.ai/docs/plugins/)) can veto actions, such as a tool call, from inside a `tool.execute.before` hook, but its session events (`session.created`, `session.idle`, and so on) track chat-session lifecycle, not the CLI process starting or exiting, so there's no equivalent of the Stop guard there either. For both agents the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
 
 ## Codex CLI
 
-- **Install:** `npm install -g @openai/codex` (requires Node.js). Docs: <https://developers.openai.com/codex/cli>.
+- **Install:** standalone installer — `curl -fsSL https://chatgpt.com/codex/install.sh | sh` (macOS/Linux; the same docs page has Windows and Homebrew variants) — is the primary documented path. `npm install -g @openai/codex` (requires Node.js) remains a supported alternative. Docs: <https://learn.chatgpt.com/docs/codex/cli>.
 - **Loads the rulebook via:** `AGENTS.md` directly — Codex reads it natively, no adapter file needed.
-- **Plan mode:** the `/plan [goal]` slash command switches the session into plan mode; you can pair it with `--path` (target a specific directory) or `--model` flags.
+- **Plan mode:** the `/plan` slash command switches the session into plan mode, optionally with an inline prompt (e.g. `/plan propose a migration plan for this service`). Keyboard shortcuts and any extra flags have moved between recent releases — check `codex --help` or `/plan` in-session for what your version supports.
 - **Model switch:** `/model` — also lets you adjust reasoning level, not just the model itself.
 - **MCP config:** `~/.codex/config.toml`, with servers under `[mcp_servers.<name>]` — note this is TOML, and the key is `mcp_servers` (underscore), not the `mcpServers` (camelCase) used by the other JSON-based agents.
-- **Skill discovery (native):** Codex scans `.agents/skills/` — repo-local (vault root, parent folder, repo root) and global (`~/.agents/skills/`) — and follows symlinks/junctions. It does **not** scan the vault's `skills/` folder, which is why setup mirrors `skills/` into `.agents/skills/`. Two gotchas: the `SKILL.md` frontmatter must start on line 1 (anything above it makes Codex reject the skill), and new skills are only picked up on the next Codex start.
+- **Skill discovery (native):** Codex scans `.agents/skills/` — repo-local (vault root, parent folder, repo root) and global (`~/.agents/skills/`) — and follows symlinks/junctions. It does **not** scan the vault's `skills/` folder, which is why setup mirrors `skills/` into `.agents/skills/`. Two gotchas: the `SKILL.md` frontmatter must start on line 1 — even a leading UTF-8 BOM makes Codex reject the skill — and while Codex detects new or changed skills automatically, a restart is the documented fallback when one doesn't show up.
 - **Session-routine hooks (optional, recommended):** Codex has a hook system with the same JSON shape as Claude Code's — put this in `.codex/hooks.json` in your vault:
 
   ```json
@@ -107,7 +115,7 @@ The rows are the portable/vendor-specific split in one view: the rulebook, skill
 ## OpenCode
 
 - **Install:** `curl -fsSL https://opencode.ai/install | bash`, or `npm install -g opencode-ai` (requires Node.js). Docs: <https://opencode.ai/docs/>.
-- **Loads the rulebook via:** `AGENTS.md` directly — OpenCode reads it natively from the project root (and a global one from `~/.config/opencode/AGENTS.md`); it even falls back to `CLAUDE.md` for Claude Code compatibility.
+- **Loads the rulebook via:** `AGENTS.md` directly — OpenCode searches upward from the current directory for a local `AGENTS.md` (or `CLAUDE.md`, used only when no `AGENTS.md` exists) and a global `~/.config/opencode/AGENTS.md`, falling back further to `~/.claude/CLAUDE.md` for Claude Code compatibility.
 - **Plan mode:** press `Tab` to toggle between Build and Plan mode — the indicator sits in the lower-right corner of the TUI; Plan mode is read-only until you switch back.
 - **Model switch:** `/models` opens the interactive model picker; a default lives in `opencode.json` as `"model": "provider/model-name"`.
 - **MCP config:** `opencode.json` (project root) or `~/.config/opencode/opencode.json` (global), servers under the `mcp` key with a `type` of `local` or `remote`.

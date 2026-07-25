@@ -4,3 +4,6 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Planning-tool scratch artifacts (briefs, reports, diffs — not part of the shipped template)
+.superpowers/
