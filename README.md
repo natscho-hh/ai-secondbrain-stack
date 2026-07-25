@@ -1,8 +1,8 @@
 # AI SecondBrain Stack
 
-<p align="center">
-  <img src="assets/demo.gif" alt="Paste one prompt and your AI agent scaffolds the whole vault" width="820">
-</p>
+[![Watch the demo](docs/assets/demo-poster.png)](https://natscho-hh.github.io/ai-secondbrain-stack/)
+
+*75 seconds, from an empty folder to a working vault.*
 
 A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.
 

@@ -182,6 +182,61 @@
   footer a {
     color: inherit;
   }
+
+  figure.demo {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin: 0 0 2rem;
+  }
+
+  figure.demo video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    background: #000;
+  }
+
+  figure.demo figcaption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: 0.6rem;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0 0 2rem;
+  }
+
+  @media (max-width: 480px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+  }
+
+  .feature-card h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+  }
+
+  .feature-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
 </style>
 </head>
 <body>
@@ -190,6 +245,14 @@
     <h1>AI SecondBrain Stack</h1>
     <p class="tagline">A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini CLI, OpenCode. Switch agents anytime; they all follow the same rules.</p>
   </header>
+
+  <figure class="demo">
+    <video src="assets/demo.mp4" poster="assets/demo-poster.png"
+           controls preload="none" playsinline width="1920" height="1080">
+      <track kind="captions" src="assets/demo.en.vtt" srclang="en" label="English" default>
+    </video>
+    <figcaption>75 seconds: from an empty folder to a working vault.</figcaption>
+  </figure>
 
   <nav class="agent-buttons">
     <button class="agent-toggle" type="button" data-agent="claude" aria-pressed="false">I use Claude Code</button>
@@ -247,6 +310,33 @@
     <pre class="prompt" data-prompt-slot></pre>
     <button class="copy-btn" type="button" data-copy-btn>Copy</button>
     <p class="closing">Your agent takes over from here.</p>
+  </section>
+
+  <section class="features">
+    <div class="feature-card">
+      <h3>One-paste bootstrap</h3>
+      <p>You hand your agent a single prompt and it becomes the installer. It checks your environment and reads the setup instructions on its own.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Interview-driven structure</h3>
+      <p>Your agent interviews you about what you actually work on. The vault it builds reflects your answers instead of a generic template.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Skills that every agent finds</h3>
+      <p>Skills live in the vault, not in one agent's private config. Claude Code, Codex, Gemini CLI, and OpenCode all read the same rulebook.</p>
+    </div>
+    <div class="feature-card">
+      <h3>MCP with keys kept outside the vault</h3>
+      <p>Only the servers you ask for get wired up. API keys stay in your agent's own config, never in a note and never in a commit.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Optional backup planning</h3>
+      <p>The installer can plan a backup from storage you already have. Nothing new to buy, nothing proprietary to migrate later.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Monthly maintenance</h3>
+      <p>A recurring routine keeps the rulebook, skills, and adapters current as agents and tools change. You run it, your agent does the update.</p>
+    </div>
   </section>
 
   <footer>
