@@ -57,6 +57,7 @@ ai-secondbrain-stack/
 │   ├── token-friendly.md  # working efficiently with an AI agent
 │   ├── security-basics.md # skill/MCP security, secrets hygiene
 │   ├── model-strategy.md  # plan with a strong model, build with a cheaper one
+│   ├── backup-strategy.md # designing a backup from what the user already owns
 │   └── per-agent-tips.md  # tips per agent (Claude Code, Codex, Gemini CLI, OpenCode)
 ├── template/               # vault scaffold, copied into the user's new vault
 │   ├── 00 Context/         # personal profile and working preferences

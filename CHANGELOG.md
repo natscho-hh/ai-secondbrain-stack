@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Backup planning as an optional setup phase (5b).** Git protects the vault, but not what `.gitignore` excludes: API keys, media, agent memory, attachments. The phase asks which storage the user already owns and which accounts they could sign into on a borrowed device, then derives a design from those two answers. It produces a written plan and a recovery runbook rather than scripts, and can be declined without friction.
+- **`guides/backup-strategy.md`** — the reasoning behind that phase: portability and recovery treated as two separate problems, the four-hour rule for deciding what is worth backing up, the sync-folder trap that silently corrupts deduplicating repositories, a target comparison that starts from what the user already pays for, client-side encryption with key custody, a mandatory credential scan before the first run, and the two verification mechanisms (a restore drill that can fail, and a watchdog that runs off the machine).
+
 ## [0.5.0] — 2026-07-12
 
 Onboarding grows up: setup now builds a personalized context profile and shows you the plan before it builds anything — and the rulebook gets an explicit branching policy.

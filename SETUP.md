@@ -6,7 +6,7 @@ This file is a script written for you to execute, not a document for the user to
 
 ## How to use this file
 
-- Complete each phase fully before moving to the next. Phases 0 → 1 → 2 are always in order. After Phase 2 you branch to **either 3a (new vault) or 3b (migration)**, then continue with 4 → 5 → 6.
+- Complete each phase fully before moving to the next. Phases 0 → 1 → 2 are always in order. After Phase 2 you branch to **either 3a (new vault) or 3b (migration)**, then continue with 4 → 5 → 5b → 6. Phases 5 and 5b are optional and may be declined.
 - "The vault" means the second-brain folder you are building for the user. "The template" means the `template/` folder inside the cloned `ai-secondbrain-stack` repo.
 - After every phase, state the **Success criteria** results back to the user in one line so they can see progress.
 - If a step fails, stop and fix it before continuing. Do not paper over a failed step.
@@ -233,6 +233,40 @@ This file is a script written for you to execute, not a document for the user to
 
 ---
 
+## Phase 5b — Backup plan (optional)
+
+**Goal:** Give the user a backup design that fits what they already own and already pay for, written down as a note they can act on. This phase produces a **plan**, not scripts. Build tooling only if the user explicitly asks for it.
+
+Git already protects the vault. This phase is about everything `.gitignore` excludes: API keys, media, agent memory, attachments. Say that in one sentence, make clear the phase is optional and can be re-run any time, and let the user decline without friction.
+
+**Steps:**
+
+1. **Read `guides/backup-strategy.md` first.** It carries the reasoning: the two scenarios, the four-hour rule, the sync-folder trap, the target comparison, and the two verification mechanisms. Do not improvise a design without it.
+2. **Ask what they already have.** One question, multiple answers allowed, and make clear you are looking for things they already pay for rather than something new to buy:
+
+   > "Which of these do you already have? A consumer cloud like OneDrive, iCloud, Google Drive or Dropbox. A password manager that can store files. A NAS or external drive. Object storage like Backblaze B2, S3 or R2. Or none of those."
+
+3. **Ask the constraint question.** This one decides the shape of the design more than anything else:
+
+   > "If your machine died today and you had to keep working on a borrowed device, which accounts could you realistically sign into there?"
+
+   If the honest answer is only their git host, the portability axis has to live there, and it carries the credentials for everything else.
+4. **Derive a recommendation and explain the trade-off in two sentences.** Apply the rules from the guide in this order: no new paid service while an existing one fits, never a deduplicating repository inside a synced folder, never the backup on the same account as the original, encrypt client-side. Name what you picked, and name what you deliberately left out.
+5. **Run the four-hour rule against their actual vault** and show the result as two short lists, what gets backed up and what only gets a recreate-note. Let them correct it. Their corrections are the real specification.
+6. **Check for plaintext credentials before proposing any backup job.** Scan the candidate paths for tokens and keys outside `.env`-style files. If anything turns up, the order is: rotate the credential, redact the file, then back up. Never propose backing up first. Report findings as path plus type, never print the value.
+7. **Write the plan into the vault** as `03 Areas/Backup & Recovery.md` (or the translated equivalent): the chosen design, what is included and excluded, where the encryption key lives, and the numbered recovery steps for a stranger. Add one entry to `todos.md` for the parts that still need doing, including a first restore drill about three months out.
+8. **Only if the user asks you to build it:** follow the reference design in the guide, and finish with a restore that is verified byte for byte, not by eye. An unverified backup gets reported as unverified.
+
+**Success criteria:**
+- [ ] The user was offered the phase and could decline; declining was recorded and setup continued normally.
+- [ ] Available storage and the replacement-device constraint are both recorded.
+- [ ] A recommendation exists that uses what the user already has, with its trade-off named in plain words.
+- [ ] The include and exclude lists were derived with the four-hour rule and confirmed by the user.
+- [ ] A credential scan ran over the candidate paths, and any finding was rotated and redacted before a backup was proposed.
+- [ ] `Backup & Recovery.md` exists with the recovery steps, and `todos.md` has the open items including a scheduled drill.
+
+---
+
 ## Phase 6 — Verify + onboarding
 
 **Goal:** Prove the vault works end to end with a real session-start run, create the user's first daily note, and hand off in a way that matches their experience level — then tell them how to keep it current and how to add more later.
@@ -261,5 +295,5 @@ This file is a script written for you to execute, not a document for the user to
 Setup is safe to run again — a user may re-run it months later to add a skill, a folder, or an MCP server. Follow these rules every time:
 
 - **Never overwrite an existing file without asking.** If a file you're about to write already exists, stop and ask the user whether to keep, merge, or replace it — default to keeping what's there.
-- **Adding things later = re-run the relevant phase only.** To add skills, re-run Phase 4. To add an MCP server, re-run Phase 5. To add or reshape folders, re-run the relevant part of Phase 3. You do not re-run the whole installer from Phase 0 to make a small addition.
+- **Adding things later = re-run the relevant phase only.** To add skills, re-run Phase 4. To add an MCP server, re-run Phase 5. To plan a backup, re-run Phase 5b. To add or reshape folders, re-run the relevant part of Phase 3. You do not re-run the whole installer from Phase 0 to make a small addition.
 - **Re-running never destroys.** Every run only adds or, with explicit confirmation, changes a specific item. Nothing the user already has is removed as a side effect of running setup again — and because every change is committed to git, anything can be undone.
