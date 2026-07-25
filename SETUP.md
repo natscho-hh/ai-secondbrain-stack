@@ -199,7 +199,14 @@ This file is a script written for you to execute, not a document for the user to
 
 1. **Copy the core skills.** Copy the skills from the repo's `skills/` folder into the vault's `skills/` folder. Each skill is its own folder with a `SKILL.md` entry point; keep that structure intact.
 
-   Then **mirror `skills/` into `.agents/skills/`** at the vault root (a plain copy is fine; on systems that support it, a symlink or junction per skill also works). Codex discovers skills natively from `.agents/skills/` — without the mirror it never sees them. Claude Code reads `skills/` directly, so both folders must stay in sync: whenever a skill is added or updated later, refresh the mirror.
+   `skills/` is the **canonical source**. Two agents discover skills only from their own directory, so both get a mirror at the vault root:
+
+   - `.claude/skills/` — Claude Code discovers project skills here.
+   - `.agents/skills/` — Codex discovers them here.
+
+   A plain copy is fine; on systems that support it, a directory junction or symlink per skill avoids the copy entirely (Windows: `mklink /J`, elsewhere `ln -s`). Gemini CLI and OpenCode have no native project-skill directory — they read `skills/` because the rulebook tells them to, which is why the canonical folder keeps a neutral name.
+
+   **Whenever a skill is added, updated, or removed later, refresh both mirrors.** A stale mirror is the single most common reason a skill "doesn't exist" for one agent and works fine for another.
 2. **Match the manifest.** Read `manifest/skills.md` (the curated catalog: name, purpose, source, license) and compare its entries against the goals you derived in Phase 2. **Propose** the matching entries to the user, saying in one line what each one is for. Note that `manifest/skills.md`'s Install column shows each tool's upstream default (often a single agent's own private config directory) — when you actually install a third-party skill, also place its folder into the vault's `skills/<name>/` (adapting the upstream command's destination), so it's portable across whichever agent the user is running, not just the one the upstream default targets.
 3. **Search community directories.** For goals the manifest doesn't cover, additionally search community skill directories (for example the awesome-claude-skills list) for skills that fit the user's stated goals, and surface promising ones.
 4. **Run the security gate before EVERY third-party skill.** Before installing any skill that isn't a template core skill, run this check and say it to the user in these exact words:
@@ -209,7 +216,7 @@ This file is a script written for you to execute, not a document for the user to
 5. **Install only after confirmation.** Actually install a third-party skill only once the user says OK for that specific skill. If any step of the gate raises a concern (private/unknown source, no real usage, commands that reach outside the vault without a clear reason), tell the user plainly and let them decide with that information in hand.
 
 **Success criteria:**
-- [ ] Core skills from `skills/` are copied into the vault with their `SKILL.md` structure intact, and `.agents/skills/` mirrors `skills/`.
+- [ ] Core skills from `skills/` are copied into the vault with their `SKILL.md` structure intact, and **both** `.claude/skills/` and `.agents/skills/` mirror it.
 - [ ] Manifest matches and any community finds were proposed with a one-line purpose each.
 - [ ] The security gate was run verbatim before every third-party skill, and nothing third-party was installed without explicit user approval.
 

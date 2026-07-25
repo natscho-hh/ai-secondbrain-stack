@@ -7,7 +7,7 @@ Practical notes for each of the four agents this vault supports. Facts below wer
 | | Claude Code | Codex CLI | Gemini CLI | OpenCode |
 |---|---|---|---|---|
 | **Rulebook entry** | `CLAUDE.md` adapter | `AGENTS.md` (native) | `GEMINI.md` adapter | `AGENTS.md` (native) |
-| **Skill discovery** | `skills/` (native) | `.agents/skills/` (native — keep it a mirror of `skills/`) | manual check of `skills/` | manual check of `skills/` |
+| **Skill discovery** | `.claude/skills/` (native — mirror of `skills/`) | `.agents/skills/` (native — mirror of `skills/`) | reads `skills/` via the `GEMINI.md` adapter | reads `skills/` via `AGENTS.md`, plus a native `skill` tool |
 | **Session hooks** | `.claude/settings.json` | `hooks.json` (global `~/.codex/` or project `.codex/`) | — | — |
 | **MCP config** | `.mcp.json` / `~/.claude.json` | `~/.codex/config.toml` (`mcp_servers`, TOML) | `~/.gemini/settings.json` (`mcpServers`) | `opencode.json` (`mcp` key) |
 | **Plan mode** | `Shift+Tab` / `/plan` | `/plan` | `Shift+Tab` / `/plan` / `--approval-mode=plan` | `Tab` toggle |
@@ -22,7 +22,7 @@ The rows are the portable/vendor-specific split in one view: the rulebook, skill
 - **Plan mode:** press `Shift+Tab` twice to cycle into it (status bar shows "⏸ plan mode on"); `/plan` is also available from v2.1 onward.
 - **Model switch:** `/model` — e.g. `/model opus`, `/model sonnet`, `/model haiku`; the menu also has a combined "Opus in plan mode, Sonnet otherwise" option.
 - **MCP config:** `.mcp.json` in the vault root (project-scoped, shareable via git) or `~/.claude.json` (user-scoped, managed with `claude mcp add --scope user`).
-- **Quirk:** Claude Code reads the vault's `skills/` folder natively. Codex discovers skills natively too, but only from `.agents/skills/` (the mirror, see the Codex section); Gemini CLI and OpenCode need to be told to check `skills/` manually, per the "Skill reflex" section of `AGENTS.md`.
+- **Quirk:** Claude Code discovers skills natively only from `.claude/skills/`, not the vault's `skills/` folder directly — `skills/` is the canonical source, `.claude/skills/` a generated mirror (set up in `SETUP.md` Phase 4). Codex works the same way, from its own `.agents/skills/` mirror (see the Codex section). Gemini CLI and OpenCode have no native project-skill directory and need to be told to check `skills/` manually, per the "Skill reflex" section of `AGENTS.md`.
 - **Session-routine hooks (optional, recommended):** the session routines in `AGENTS.md` are prose — they work only as long as the agent remembers them. Claude Code can enforce the two critical ones mechanically with hooks in `.claude/settings.json` inside your vault:
 
   ```json
