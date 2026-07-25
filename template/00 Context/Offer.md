@@ -1,11 +1,11 @@
 ---
 tags: [context]
-date: 2026-07-11
+date: YYYY-MM-DD
 ---
 
 # Offer
 
-What you sell or provide — products, services, courses, consulting. Your agent reads this when writing anything that presents your work to the outside world. Replace the italicized examples with your own; "nothing yet" is a valid answer, just leave the placeholders and come back later.
+What you sell or provide — products, services, courses, consulting. Your agent reads this when writing anything that presents your work to the outside world. If you have nothing to sell yet, one honest sentence saying so is the right content for this file; it can grow later.
 
 ## Products and services
 

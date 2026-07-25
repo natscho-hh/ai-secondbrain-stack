@@ -1,7 +1,7 @@
 ---
 tags: [project]
 status: active
-date: 2026-07-04
+date: YYYY-MM-DD
 ---
 
 # Example Project
@@ -18,4 +18,4 @@ This is an example project note, showing the shape a project takes in this vault
 
 ## Log
 
-*2026-07-04: Created this project and sketched the first draft of the homepage copy.*
+*YYYY-MM-DD: Created this project and sketched the first draft of the homepage copy.*

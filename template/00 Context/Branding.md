@@ -1,6 +1,6 @@
 ---
 tags: [context]
-date: 2026-07-11
+date: YYYY-MM-DD
 ---
 
 # Branding

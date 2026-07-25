@@ -1,7 +1,7 @@
 ---
 tags: [inbox]
 status: active
-date: 2026-07-11
+date: YYYY-MM-DD
 ---
 
 # Brain Dump
