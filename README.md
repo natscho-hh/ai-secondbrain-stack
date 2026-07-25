@@ -9,7 +9,7 @@ A git-versioned second brain for AI coding agents — Claude Code, Codex, Gemini
 ## Quick Start
 
 1. **Install an AI coding agent.** Any of the following will work:
-   - [Claude Code](https://docs.claude.com/en/docs/claude-code)
+   - [Claude Code](https://code.claude.com/docs)
    - [OpenAI Codex CLI](https://github.com/openai/codex)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
    - [OpenCode](https://opencode.ai/)
