@@ -12,6 +12,7 @@ All notable changes to this project are documented here. The format is based on 
 
 ### Changed
 
+- **`todos.md` now has a size limit in the rulebook** — five lines per entry, detail lives in the project file, finished entries drop after two weeks. The rule that information has one home was already there, but nothing stopped the priority board from quietly duplicating project state until it became the single largest context cost in every session. In the run that prompted this, it had grown to more than twice the size of the rulebook itself; trimming it back was worth more than every other change combined. An over-long entry is treated as a placement problem, not a formatting one.
 - **`vault-health` now says what it is not.** It is the fast structural check, minutes rather than a session, and it hands orphans, contradictions, and rule-file bloat to `vault-inventory` explicitly. Its wikilink step also warns about the two parsing traps that make the check lie with full confidence: escaped pipes in table aliases, and a byte-order mark on line one.
 - **`MAINTENANCE.md` gained a caution that applies to both routines** — when a step commits inside a repository other than the vault, stage the files you actually changed, because ignore rules routinely differ between branches.
 
