@@ -1,13 +1,36 @@
 # Maintenance
 
-This file describes the periodic upkeep routine for a vault built from AI SecondBrain Stack. It keeps the rulebook, skills, and adapters current as agents and tools evolve. `AGENTS.md` points here from its `## Maintenance` section.
+This file describes the periodic upkeep for a vault built from AI SecondBrain Stack. `AGENTS.md` points here from its `## Maintenance` section.
+
+## Two routines, and both are mandatory
+
+Upkeep splits into two jobs that are easy to confuse and impossible to substitute for each other.
+
+| | Environment check | Content inventory |
+|---|---|---|
+| Keeps current | skills, plugins, MCP servers, CLIs, the template itself | what the vault *says* |
+| Finds | outdated versions, drifted mirrors, a stale rulebook | orphaned notes, contradicting decisions, rules that no longer earn their context cost |
+| Defined in | this file, `## Routine` below | `skills/vault-inventory/SKILL.md` |
+| Cadence | first session of a new month | once a month, near month's end |
+| Takes | a few minutes | a session |
+| Logged as | `last-check` in `.maintenance-log.md` | `last-inventory` in the same file |
+
+**Run both.** A vault whose tooling is perfectly current still rots, and the rot is the expensive kind: a decision gets reversed, the older version stays behind, two notes now disagree, and nobody notices until an agent reads the wrong one and builds on it. No version check catches that, because both files are perfectly well-formed.
+
+The inventory is the slower and less obvious of the two, which is precisely why it has to be scheduled rather than remembered. Put it near the end of the month, when a monthly usage allowance would otherwise expire unused.
+
+**Never let one report stand in for the other.** "Maintenance check done" says nothing about whether the vault still agrees with itself.
 
 ## When
 
-Run the routine below when either of these is true:
+Run the environment routine below when either of these is true:
 
 - **First session of a new month.** The agent compares today's date with `last-check` in `template/.maintenance-log.md` (copied into the vault root as `.maintenance-log.md` during setup). If a month or more has passed, offer to run the check.
 - **On request.** The user explicitly says "maintenance check" (or equivalent) at any time.
+
+**For the content inventory, the trigger sits at the other end of the month.** From roughly the 26th onward, compare today's date against `last-inventory` in the same file; if this month has none, offer to run `vault-inventory`. Same as above, it stays an offer inside a conversation — the routine is a session's worth of work and nobody should find it already running.
+
+If the vault has a session-start hook, that is the natural place for both nudges. A hook that reads the log file (or the git history) needs no extra state on disk, and unlike an in-session scheduler it survives the session that set it up.
 
 This is a conversational routine the agent runs during a normal session — nothing here requires an external scheduler. If you'd still like a monthly nudge (for example because you don't open the vault every month), you can optionally set up an OS-level reminder that just drops a note into `01 Inbox/` so the agent picks it up next time you talk. These are illustrative examples, not something this template wires up for you:
 
@@ -56,8 +79,10 @@ None of these run the maintenance routine itself — they only leave a note. The
    - offer **selective adoption** — the user picks which changes to bring in,
    - never overwrite the user's personalized content (their structure, rules, and language) as a side effect.
 8. **Smoke test.** Run one full session-start routine end to end to confirm everything still works after the updates above.
-9. **Close out.** Write today's date into `.maintenance-log.md`, give the user a short report of what was checked and changed, then commit: `git add -A && git commit -m "chore: maintenance check YYYY-MM-DD"`.
+9. **Close out.** Write today's date into `.maintenance-log.md` as `last-check`, give the user a short report of what was checked and changed, then commit: `git add -A && git commit -m "chore: maintenance check YYYY-MM-DD"`. If `last-inventory` in that same file is more than a month old, say so here — this routine does not cover it.
 
 ## Safety
 
 Every step that changes something is preceded by a commit. If any update causes a problem, it can always be undone with `git revert` — nothing here is destructive or irreversible.
+
+**One caution that applies to both routines.** When a step commits inside a repository other than the vault, stage the files you actually changed. A blanket `git add -A` there picks up whatever that repository's `.gitignore` does not cover on the branch you happen to be on, and ignore rules routinely differ between branches. That is how a one-line documentation fix ends up carrying thousands of lines of generated output.

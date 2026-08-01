@@ -19,7 +19,7 @@ The vault follows a PARA-style layout: nine top-level folders, each with one cle
 | `07 Attachments` | Images, PDFs, and other media referenced from notes. |
 | `99 Templates` | Obsidian note templates (daily note, project, inbox capture) — use them when creating new notes so frontmatter stays consistent. |
 
-A handful of files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work); `.maintenance-log.md`, the maintenance routine's record of its last run; and the agent rule files (`AGENTS.md` and its adapters).
+A handful of files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work); `.maintenance-log.md`, the record of when the two upkeep routines last ran; and the agent rule files (`AGENTS.md` and its adapters).
 
 ## Vault rules
 
@@ -28,6 +28,7 @@ A handful of files live at the vault root alongside these folders: `todos.md`, t
 - Every note's YAML frontmatter includes `tags`, `status`, and `date`. Allowed `status` values: `active` / `completed` / `paused` / `waiting` (`waiting` = blocked on someone or something external — name the trigger in the note). Daily notes and `00 Context` notes don't need a `status` field. When a project grows into a folder, only its hub/README file carries the project status; sub-notes omit it or inherit it.
 - Tags are lowercase kebab-case. The first tag names the note type (`project` / `area` / `resource` / `daily` / `inbox` / `archive` / `context`), followed by topic tags. Before inventing a new tag, check whether an existing one fits — no synonyms.
 - One home per piece of information: the project file holds current state + next step, `todos.md` holds cross-project priorities, the daily note holds the day's log. Never maintain the same open-items list in two places; if they disagree, the project file wins.
+- **Keep `todos.md` entries short — five lines at most.** Each entry names the thing, why it matters now, and the next step, then links to the project file. Test numbers, commit hashes, branch names, and state blocks belong in that project file, not on the board. Drop finished entries after two weeks; their substance already lives in the project file and the daily note. An entry that outgrows five lines is not a formatting problem — it is the signal that content is sitting in the wrong place. Left alone, this one file grows into the single largest context cost in every session that touches project work.
 - Every external repo or file the vault refers to gets its own link note (local path, remote URL, branch, backlink to the project) — so knowledge and code stay connected. Never delete these link notes.
 - During inbox triage, add any missing frontmatter (`tags`, `status`, `date`) to captured notes before filing them.
 - When creating a new note, start from the matching template in `99 Templates/` so frontmatter stays consistent.
@@ -82,7 +83,10 @@ Plan and brainstorm with the strongest model available and in your agent's plan 
 
 ## Maintenance
 
-On the first session of a new month, compare today's date with the date recorded in `.maintenance-log.md`. If a month or more has passed, offer to run the maintenance check described in `MAINTENANCE.md` — it keeps the rulebook, skills, and adapters current as agents and tools evolve.
+Upkeep has two mandatory halves, both described in `MAINTENANCE.md`, both tracked in `.maintenance-log.md`. Running one does not cover the other, and neither report may claim it did.
+
+- **Environment check.** On the first session of a new month, compare today's date with `last-check`. If a month or more has passed, offer to run the maintenance routine — it keeps the rulebook, skills, and adapters current as agents and tools evolve.
+- **Content inventory.** From roughly the 26th onward, compare today's date with `last-inventory`. If this month has none, offer to run the `vault-inventory` skill — it finds orphaned notes, contradicting decisions, and rules that stopped earning their context cost. The environment check cannot find any of those, because the files it looks at are all perfectly well-formed.
 
 ## Agent-specific notes
 
