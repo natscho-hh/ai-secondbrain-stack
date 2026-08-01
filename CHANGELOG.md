@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-08-01
+
+Two rules that had been quietly failing in the source vault, replaced with versions that survive contact with real use. Both were carried as upstream candidates for weeks; neither is a new idea, both are corrections.
+
+### Changed
+
+- **Tag taxonomy: two mandatory tags, free order, and a written register.** The old rule said the type tag comes first, followed by topic tags. Position is the part that cannot be enforced and buys nothing — Obsidian searches tags as a set, so `#my-project` finds a note wherever that tag sits. In the vault this template comes from, the ordering rule held in 78% of notes and not one violation had ever caused a problem. What actually matters is *presence*: a type tag, plus the project or area tag of the folder the note lives in. The rulebook now requires both, declares order explicitly irrelevant, and asks for a register table mapping folder to tag. Read the tag from that register — deriving it from the folder name looks obvious and quietly produces two tags for one thing the first time a folder is renamed or a topic exists as both a project and a resource folder. `vault-health` checks the second mandatory tag and is told not to report order, and `inbox-triage` files notes with both.
+- **Branching policy now depends on whether you are watching.** The old rule was absolute: the vault always works on `main`, never fall back to a branch. That is right for an agent you are sitting in front of, and wrong for one that runs without you. An unattended run — cloud, background, scheduled — writes with nobody reading along, and its context ends when the run ends; a branch is the only place where that reading can still happen. So: attended agents commit to `main` as before; unattended agents always work on `agent/<topic>` and never push to `main`, and you review and merge locally. A related trap is now written down: **a rollback tag set during an unattended run is not a safety net**, because tags don't push automatically and one created in a throwaway sandbox dies with it. Rely on the predecessor commit in the branch, or push the tag explicitly.
+
 ## [1.1.0] — 2026-08-01
 
 Upkeep was only half a routine. The template kept the environment current and checked that the vault was well-formed, but nothing checked whether the vault still agreed with itself — the failure mode that hides behind perfectly valid files. 1.1 adds the missing half.
@@ -150,6 +159,7 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
+[1.2.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.2.0
 [1.1.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.1.0
 [1.0.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.0.0
 [0.5.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.5.0
