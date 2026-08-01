@@ -1,4 +1,4 @@
-<!-- asbos-template-version: 1.1.0 -->
+<!-- asbos-template-version: 1.2.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
@@ -26,7 +26,19 @@ A handful of files live at the vault root alongside these folders: `todos.md`, t
 - Use `[[wikilinks]]` to connect notes to each other.
 - Keep notes atomic: one idea per note. The one exception is daily notes, which are a running log.
 - Every note's YAML frontmatter includes `tags`, `status`, and `date`. Allowed `status` values: `active` / `completed` / `paused` / `waiting` (`waiting` = blocked on someone or something external — name the trigger in the note). Daily notes and `00 Context` notes don't need a `status` field. When a project grows into a folder, only its hub/README file carries the project status; sub-notes omit it or inherit it.
-- Tags are lowercase kebab-case. The first tag names the note type (`project` / `area` / `resource` / `daily` / `inbox` / `archive` / `context`), followed by topic tags. Before inventing a new tag, check whether an existing one fits — no synonyms.
+- Tags are lowercase kebab-case. Every note carries **two mandatory tags**, then as many topic tags as it needs:
+  1. a **type tag** — `project` / `area` / `resource` / `daily` / `inbox` / `archive` / `context`
+  2. the **project or area tag** of its folder, but only when the note lives inside a project or area folder. Flat single-reference notes directly in `04 Resources/` don't need one.
+
+  **The order is free.** Obsidian searches tags as a set, not by position, so `#my-project` finds the note wherever that tag sits. Order is never a finding. A rule that demands a fixed position costs enforcement and buys nothing — in the vault this template comes from, that rule held in 78% of notes and its violations had never caused a single problem.
+
+  **Keep a register of project and area tags** in the table below, and read the tag from it instead of deriving it from the folder name. Derivation looks obvious and quietly produces two tags for one thing the first time a folder gets renamed, or the first time a topic appears as both a project and a resource folder.
+
+  | Folder | Tag |
+  |---|---|
+  | *(add one row per project or area folder as you create it)* | |
+
+  Before inventing a new tag, check whether an existing one fits — no synonyms. Where a word is ambiguous across the vault, pick the more specific tag and record here which spelling is canonical.
 - One home per piece of information: the project file holds current state + next step, `todos.md` holds cross-project priorities, the daily note holds the day's log. Never maintain the same open-items list in two places; if they disagree, the project file wins.
 - **Keep `todos.md` entries short — five lines at most.** Each entry names the thing, why it matters now, and the next step, then links to the project file. Test numbers, commit hashes, branch names, and state blocks belong in that project file, not on the board. Drop finished entries after two weeks; their substance already lives in the project file and the daily note. An entry that outgrows five lines is not a formatting problem — it is the signal that content is sitting in the wrong place. Left alone, this one file grows into the single largest context cost in every session that touches project work.
 - Every external repo or file the vault refers to gets its own link note (local path, remote URL, branch, backlink to the project) — so knowledge and code stay connected. Never delete these link notes.
@@ -67,7 +79,13 @@ git add -A && git commit -m "short description" && git push
 
 Do not batch multiple unrelated changes into a single silent commit at the end of a session — sync as you go, so the vault stays recoverable at every step.
 
-**Branching policy:** the vault always works directly on `main` — no session branches, no feature branches. A knowledge base has no "broken intermediate state" that a branch would protect, and every routine in this rulebook (session-start pull, capture channels, any agent reading the vault) relies on one single truth. Rollback needs are covered by the commit history and by tags (set a rollback tag before risky bulk operations, e.g. `pre-cleanup-2026-07-11`). If a push is rejected (non-fast-forward — usually a parallel session or a web edit): `git pull --rebase origin main`, resolve the conflict (for binary files, the newer version wins — check timestamps), push again. Never fall back to a branch. Branches belong in code repos, and there per topic or feature — never per session.
+**Branching policy.** It depends on one thing: whether you are there while the agent runs.
+
+- **Agents you are sitting in front of work directly on `main`.** No session branches, no feature branches. A knowledge base has no "broken intermediate state" that a branch would protect, and every routine in this rulebook (session-start pull, capture channels, any agent reading the vault) relies on one single truth. Rollback is covered by the commit history and by tags — set a rollback tag before risky bulk operations, e.g. `pre-cleanup-2026-07-11`. If a push is rejected (non-fast-forward, usually a parallel session or a web edit): `git pull --rebase origin main`, resolve the conflict (for binary files the newer version wins — check timestamps), push again. Never fall back to a branch.
+- **Agents that run without you always work on a branch and never push to `main`.** That means cloud and background runs, scheduled jobs, anything whose output you read afterwards rather than while it happens. Branch name `agent/<topic>`. You review the branch locally and merge from there. The reason is not code safety, it is review: an unattended run writes without anyone reading along, and its context ends when the run ends. The branch is the only place where that reading can still happen.
+- **A rollback tag set during an unattended run is not a safety net.** Tags don't push automatically, so a tag created in a throwaway sandbox dies with it. An unattended agent relies on the predecessor commit in its branch and does not claim a net it never hung. If you genuinely want the tag, push it explicitly with `git push origin <tag>`.
+
+Branches otherwise belong in code repos, and there per topic or feature — never per session.
 
 ## Skill reflex (mandatory)
 

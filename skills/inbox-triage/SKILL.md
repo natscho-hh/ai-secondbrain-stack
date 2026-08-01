@@ -16,7 +16,7 @@ Use this skill whenever `01 Inbox/` has one or more notes waiting to be processe
    - **File** — the note is ready to move into the PARA structure (`02 Projects`, `03 Areas`, or `04 Resources`).
 3. If the user chooses **discard**: confirm the exact file, then delete it.
 4. If the user chooses **pending**: rename the file to `Pending - <topic>.md` and restructure it with three sections: `## Source` (where the idea came from), `## Analysis` (what it is and why it matters), `## Next step` (the concrete next action). Leave it in `01 Inbox/`.
-5. If the user chooses **file**: move the note into the correct destination folder, and set its YAML frontmatter (`tags`, `status`, `date`) to match the target area's conventions.
+5. If the user chooses **file**: move the note into the correct destination folder, and set its YAML frontmatter (`tags`, `status`, `date`) to match the target area's conventions. When the destination is a project or area folder, the note needs that folder's tag alongside its type tag — take the tag from the register in `AGENTS.md` instead of deriving one from the folder name, and add a row to that register if the folder has no entry yet.
 6. Whatever the choice (pending or file), retrofit any missing frontmatter (`tags`, `status`, `date`) — quick captures often arrive without any.
 7. After processing all notes in the batch, commit the changes with a short, descriptive message and push.
 
