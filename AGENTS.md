@@ -19,7 +19,7 @@ The vault follows a PARA-style layout: nine top-level folders, each with one cle
 | `07 Attachments` | Images, PDFs, and other media referenced from notes. |
 | `99 Templates` | Obsidian note templates (daily note, project, inbox capture) — use them when creating new notes so frontmatter stays consistent. |
 
-A handful of files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work); `.maintenance-log.md`, the maintenance routine's record of its last run; and the agent rule files (`AGENTS.md` and its adapters).
+A handful of files live at the vault root alongside these folders: `todos.md`, the central priority board across all projects (updated in every session that touches project work); `.maintenance-log.md`, the record of when the two upkeep routines last ran; and the agent rule files (`AGENTS.md` and its adapters).
 
 ## Vault rules
 
@@ -82,7 +82,10 @@ Plan and brainstorm with the strongest model available and in your agent's plan 
 
 ## Maintenance
 
-On the first session of a new month, compare today's date with the date recorded in `.maintenance-log.md`. If a month or more has passed, offer to run the maintenance check described in `MAINTENANCE.md` — it keeps the rulebook, skills, and adapters current as agents and tools evolve.
+Upkeep has two mandatory halves, both described in `MAINTENANCE.md`, both tracked in `.maintenance-log.md`. Running one does not cover the other, and neither report may claim it did.
+
+- **Environment check.** On the first session of a new month, compare today's date with `last-check`. If a month or more has passed, offer to run the maintenance routine — it keeps the rulebook, skills, and adapters current as agents and tools evolve.
+- **Content inventory.** From roughly the 26th onward, compare today's date with `last-inventory`. If this month has none, offer to run the `vault-inventory` skill — it finds orphaned notes, contradicting decisions, and rules that stopped earning their context cost. The environment check cannot find any of those, because the files it looks at are all perfectly well-formed.
 
 ## Agent-specific notes
 
