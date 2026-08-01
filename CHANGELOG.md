@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-08-01
+
+Upkeep was only half a routine. The template kept the environment current and checked that the vault was well-formed, but nothing checked whether the vault still agreed with itself — the failure mode that hides behind perfectly valid files. 1.1 adds the missing half.
+
 ### Added
 
 - **`vault-inventory`, a fourth core skill — the monthly content inventory.** The template kept the *environment* current (`MAINTENANCE.md`) and checked the *structure* (`vault-health`), but nothing looked at whether the vault still agreed with itself. That gap hides the most expensive failure type there is: a decision gets reversed, the older version stays behind, two notes now disagree, and nobody notices until an agent reads the wrong one and builds on it. Neither a version check nor a link check catches it, because both files are perfectly well-formed. The skill runs seven phases (inventory, wikilinks, contradictions, measuring the rule files, judgment, an adversarial read, report), splits them across models on purpose, and carries one hard rule: **it repairs nothing.** It presents; the user decides. Its pitfall list comes from a real run rather than from imagination — the mandatory placeholder filter, escaped pipes in markdown tables, a byte-order mark that silently defeats frontmatter detection, link occurrences versus link targets, and the two-condition test before calling a file dead.
@@ -146,6 +150,7 @@ First public release. AI SecondBrain OS turns an Obsidian vault into an AI-agnos
 
 - Verified end-to-end with **Claude Code** (full setup, onboarding, and a byte-exact non-destructive migration test). **Codex** correctly reads and reasons over every document; on a locked-down machine its default sandbox blocks first-run writes until you approve file/network access. **Gemini CLI** is currently blocked at Google's own account tier for individual users — unrelated to this project.
 
+[1.1.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.1.0
 [1.0.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v1.0.0
 [0.5.0]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.5.0
 [0.4.1]: https://github.com/natscho-hh/ai-secondbrain-stack/releases/tag/v0.4.1
