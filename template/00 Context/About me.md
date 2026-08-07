@@ -1,5 +1,6 @@
 ---
 tags: [context]
+summary: Who you are, what you do, and what an agent should know before writing anything on your behalf
 date: YYYY-MM-DD
 ---
 

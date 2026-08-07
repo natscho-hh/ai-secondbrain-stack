@@ -283,16 +283,22 @@ Git already protects the vault. This phase is about everything `.gitignore` excl
 
 1. **Run one full session-start routine as a test.** Follow the session-start routine from the vault's `AGENTS.md` (pull latest, show new commits, check `01 Inbox/` for notes to triage) so both you and the user see it work. If the vault has no remote yet, note that the pull step is a no-op for now and will start working once GitHub is connected.
 2. **Create the first daily note** at `05 Daily Notes/YYYY-MM-DD.md` (using today's date), so the daily log exists from day one. Add a short first entry noting that setup is complete.
-3. **Onboard according to experience level** (from Phase 2):
+3. **Demonstrate the retrieval layer once, on the user's own vault.** These rules only pay off if the user sees why they exist, and one worked example beats a paragraph:
+   - Show the `summary:` line in a note you created and say the restriction out loud: purpose, never state. A sentence about what a note is *for* does not go stale when the work moves on — which is exactly how priority boards and setup maps rot, and summaries do not.
+   - Ask the user a question about their own vault and answer it following the **search order** in `AGENTS.md`: titles, tags, and summaries first, one file opened, that file named in the answer. Then say what you did *not* do, namely read the whole folder.
+   - Point at a hub file and its sub-file list and state the rule: creating a sub-file means adding it to the hub in the same move.
+   - Mention that `vault-health` checks all of this later, and that it separates hard findings from warnings on purpose.
+4. **Onboard according to experience level** (from Phase 2):
    - **Beginner:** walk through `guides/first-steps.md` **interactively**, doing the steps together rather than just linking it. While you do, explain **token-friendly habits** (from `guides/token-friendly.md`) and the **model strategy** (plan with a strong model, build with a cheaper one — `guides/model-strategy.md`) in context, as they come up.
    - **Intermediate / pro:** hand over the `guides/` folder as reference and point out the specific guides most relevant to their stated goals, without walking through them step by step.
-4. **Explain how to keep it current and how to extend it.** Tell the user:
+5. **Explain how to keep it current and how to extend it.** Tell the user:
    - how to **update later** — the recurring health-check routine defined in `MAINTENANCE.md`, which keeps the rulebook, skills, and adapters current as agents and tools evolve.
    - how to **re-run setup to add modules** later — re-running this `SETUP.md` is **idempotent**: it never overwrites what's already there, it only adds. To add skills or folders later, they just ask the agent to re-run the relevant phase.
 
 **Success criteria:**
 - [ ] A full session-start routine has been run successfully as a test.
 - [ ] Today's daily note exists in `05 Daily Notes/` with a first entry.
+- [ ] The retrieval layer has been demonstrated live: a `summary:` shown, one question answered along the search order with the source file named, and the hub rule stated at a real hub.
 - [ ] The user has been onboarded at the right depth for their experience level (beginner = interactive walkthrough incl. token-friendly + model-strategy habits; intermediate/pro = guides handed over as reference).
 - [ ] The user knows how to update later (`MAINTENANCE.md`) and that re-running setup only adds, never overwrites.
 

@@ -1,4 +1,4 @@
-<!-- asbos-template-version: 1.2.0 -->
+<!-- asbos-template-version: 1.3.0 -->
 # AGENTS.md — Vault Rulebook
 
 This file is the single source of truth for how any AI agent works in this vault. `CLAUDE.md` and `GEMINI.md` (and any other agent-specific file) only point here — the rules themselves live in exactly one place.
@@ -24,8 +24,11 @@ A handful of files live at the vault root alongside these folders: `todos.md`, t
 ## Vault rules
 
 - Use `[[wikilinks]]` to connect notes to each other.
+- **A hub links its own sub-files.** The hub file of a project, area, or resource folder lists every sub-file at least once as a wikilink, with half a sentence saying what it is for. Creating a sub-file means adding it to the hub in the same move. A sub-file missing from its hub is a finding, not a matter of taste. The reverse does not hold: a report or a finished single note is allowed to be a dead end with no outgoing link — never invent links to satisfy a metric. `01 Inbox/`, `05 Daily Notes/`, and `06 Archive/` are exempt.
+- **`summary:` describes purpose, never state.** Every active knowledge note carries a `summary:` line in its frontmatter, at most 160 characters, saying what the note is *for* and what it covers. No version numbers, no test counts, no current status, no "waiting on". That one restriction is the whole trick: a sentence about purpose does not go stale when the state changes, which is exactly how priority boards and setup maps rot. Skip it in `01 Inbox/`, `05 Daily Notes/`, `06 Archive/`, `99 Templates/`, and the rule files themselves. It is what the first stage of the search order below reads, so a vault without it falls back to full-text search on every question.
+- **A knowledge note that passes roughly 50 KB gets split by subject.** Move whole sections into their own notes and link them from the hub — do not summarize. Summarizing creates a second home for the same information and breaks the one-home rule above. Size alone is not the problem; a note nobody can load in one piece is.
 - Keep notes atomic: one idea per note. The one exception is daily notes, which are a running log.
-- Every note's YAML frontmatter includes `tags`, `status`, and `date`. Allowed `status` values: `active` / `completed` / `paused` / `waiting` (`waiting` = blocked on someone or something external — name the trigger in the note). Daily notes and `00 Context` notes don't need a `status` field. When a project grows into a folder, only its hub/README file carries the project status; sub-notes omit it or inherit it.
+- Every note's YAML frontmatter includes `tags`, `status`, `date`, and `summary`. Allowed `status` values: `active` / `completed` / `paused` / `waiting` (`waiting` = blocked on someone or something external — name the trigger in the note). Daily notes and `00 Context` notes don't need a `status` field. When a project grows into a folder, only its hub/README file carries the project status; sub-notes omit it or inherit it.
 - Tags are lowercase kebab-case. Every note carries **two mandatory tags**, then as many topic tags as it needs:
   1. a **type tag** — `project` / `area` / `resource` / `daily` / `inbox` / `archive` / `context`
   2. the **project or area tag** of its folder, but only when the note lives inside a project or area folder. Flat single-reference notes directly in `04 Resources/` don't need one.
@@ -51,6 +54,21 @@ A handful of files live at the vault root alongside these folders: `todos.md`, t
 - Move completed work into `06 Archive/` only when the user explicitly asks for it — never automatically.
 - Always ask before deleting or overwriting a note.
 - When the user says "remember this," file the information in the topically correct place — a writing-style note goes to the relevant style guide, project knowledge goes into the project file, general reference goes into Resources, and vault-wide rules go here, in `AGENTS.md`.
+
+## Search order
+
+Applies to every question about what the vault already holds. It does not apply to writing daily notes or inbox captures, and it does not apply to the "where was I?" briefing below, which deliberately reads several files.
+
+1. Search titles, tags, and `summary:` first — not the full text. Judge the candidates without opening any file.
+2. Only when that returns nothing, or nothing that plausibly fits, search the full text.
+3. Open exactly **one** file, the best one, and read only the relevant section. At most one counter-candidate when two notes are genuinely in the running.
+4. Then answer, and name the file the answer came from.
+
+Follow a reference at most once. **If what you read contradicts itself or plainly does not carry the answer, keep reading — and say so, because that is a finding.** If the ladder produces no hit at all, that is also a finding, not an invitation to read everything after all.
+
+**Having read one file is not evidence.** This rule saves searching; it does not replace checking whether the passage actually answers the question.
+
+Why the ladder starts at metadata rather than at a generated index: in the vault this template comes from, a full-text scan across every note took 53–118 ms, while a complete index of the same vault weighed 48,509 characters and had to be loaded into context on every session. Finding things was never the expensive part. Measure before you build an index — the answer flips once a vault grows past a few hundred notes, but it is worth knowing which side you are on.
 
 ## Session routines
 

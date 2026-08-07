@@ -30,11 +30,24 @@ Your agent will clone the repo, run the environment checks, interview you about 
 - **Git sync after every change**, so your second brain is versioned, diffable, and recoverable like any codebase
 - **Portable skills** that travel with the vault instead of living in a single agent's private config
 - **Maintenance built in** — a standing routine for keeping the setup current as agents and tools evolve
+- **A retrieval layer** so the vault stays findable as it grows — a one-line `summary:` on every note, a search order that reads metadata before full text, and the rule that a hub always links its own sub-files
 - **Works in Obsidian** out of the box — ships with a starter `.obsidian/` config (sensible editor defaults, per-folder graph colors, a theme selection) so the graph view and editor look considered from the first launch, on top of the same plain-text files your agent reads and writes
 
 ## How it works
 
+![How the AI SecondBrain Stack fits together](assets/architecture.png)
+
 `AGENTS.md` is the single rulebook — every rule about vault structure, session routines, and git sync lives there and nowhere else. `CLAUDE.md` and `GEMINI.md` (and equivalents for other agents) are thin, three-line adapter files that simply point their respective agent at `AGENTS.md`, so the rules never have to be duplicated or kept in sync by hand. Your agent itself is the installer: `SETUP.md` is a script written for an AI agent to execute, not for a human to run manually, and it walks through environment checks, an interview, and vault assembly. Once set up, `MAINTENANCE.md` defines a recurring routine that keeps the rulebook, skills, and adapters up to date as the ecosystem changes.
+
+### Finding things again
+
+A knowledge base is easy to write into and hard to read out of. The retrieval layer is the part that keeps the second half working as the vault grows, and it is deliberately made of rules rather than machinery — no generated index, no separate search database, nothing that has to be rebuilt.
+
+![The retrieval layer: four moments in a session, and what the vault itself carries](assets/retrieval-layer.png)
+
+Every active note carries a `summary:` line describing what it is *for*, never what state it is in — a sentence about purpose does not go stale when the work moves on. The search order reads titles, tags, and those summaries before it ever touches full text, then opens exactly one file and names it in the answer. And because a note nobody links to is found only by accident, a hub always lists its own sub-files. `vault-health` checks all three, reports, and repairs nothing.
+
+The measurement behind the design, from the vault this template comes from: a full-text scan of the whole vault took 53–118 ms, while a generated index of the same vault weighed 48,509 characters that had to be loaded on every session. Finding things was never the expensive part. That answer flips once a vault grows past a few hundred notes — the point is to measure rather than assume.
 
 ## Repo map
 

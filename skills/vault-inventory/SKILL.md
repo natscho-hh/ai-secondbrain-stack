@@ -56,14 +56,15 @@ Per markdown file: path, date in frontmatter, last commit, incoming wikilinks, o
 
 ### Phase 2 — Wikilinks
 
-Six checks, in this order:
+Seven checks, in this order:
 
-1. **Dead targets.** A `[[target]]` with no matching file. **The placeholder filter is mandatory,** not a refinement — without it the run reports dozens of false positives from templates and instructions. Exclude targets inside code blocks, generic names like `Note`, `Note Name`, `Target`, `Path`, `...`, and anything with a file extension.
-2. **Orphaned notes.** Files nothing links to. This is the case where linking genuinely changes something, because an agent finds an unlinked note only by accident.
-3. **Ambiguous names.** The same filename in several folders. Obsidian resolves by name; an agent guesses.
-4. **Relative paths used as wikilinks.** `[[../../04 Resources/…]]` does not resolve in Obsidian. Always an error.
-5. **Agent-memory slugs used as wikilinks.** Memory entries are not vault notes; they belong in plain text.
-6. **Renames with links left behind.** Pull renames from `git log --diff-filter=R --name-status` and check whether anything still points at the old name. This is the most productive of the six, because the dead link here is not the error — it is the *trace* of one.
+1. **Dead targets.** A `[[target]]` with no matching file. **The placeholder filter is mandatory,** not a refinement — without it the run reports dozens of false positives from templates and instructions. Exclude targets inside code blocks, generic names like `Note`, `Note Name`, `Target`, `Path`, `...`, and anything with a file extension. A measured run of this filter: 27 raw hits, 0 real. See the exclusion list in `vault-health` for the full set and for the two exclusions that look right and are not.
+2. **Orphaned notes.** Files nothing links to. This is the case where linking genuinely changes something, because an agent finds an unlinked note only by accident. **Count the link source, not just the link.** A note referenced only from a daily note or from the archive is not connected — it was mentioned once, in a log. Counting those sources makes the number look healthy while the note stays unreachable in practice; in the vault this template comes from, the two definitions gave 7 orphans versus 14, and the stricter number was the true one.
+3. **Sub-files missing from their hub.** For every project, area, and resource *folder*, check that the hub file links each sub-file at least once, as the rulebook requires. This is stricter than the orphan check and catches what it cannot: a note linked from three sibling notes but absent from the hub is reachable by luck, not by structure. The reverse is never a finding — a report or a finished note may have no outgoing links at all.
+4. **Ambiguous names.** The same filename in several folders. Obsidian resolves by name; an agent guesses.
+5. **Relative paths used as wikilinks.** `[[../../04 Resources/…]]` does not resolve in Obsidian. Always an error.
+6. **Agent-memory slugs used as wikilinks.** Memory entries are not vault notes; they belong in plain text.
+7. **Renames with links left behind.** Pull renames from `git log --diff-filter=R --name-status` and check whether anything still points at the old name. This is the most productive of the six, because the dead link here is not the error — it is the *trace* of one.
 
 ### Phase 3 — Contradictions
 

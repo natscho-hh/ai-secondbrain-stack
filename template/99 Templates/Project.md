@@ -1,5 +1,6 @@
 ---
 tags: [project, topic]
+summary: One sentence on what this project is for and what it covers - purpose only, never state, max 160 characters
 status: active
 date: {{date}}
 ---

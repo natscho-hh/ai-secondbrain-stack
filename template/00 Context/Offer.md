@@ -1,5 +1,6 @@
 ---
 tags: [context]
+summary: What you sell or offer, to whom, and on what terms
 date: YYYY-MM-DD
 ---
 

@@ -1,5 +1,6 @@
 ---
 tags: [context]
+summary: Who you are writing and building for - their situation, their problems, and what they want
 date: YYYY-MM-DD
 ---
 

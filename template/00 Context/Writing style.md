@@ -1,5 +1,6 @@
 ---
 tags: [context]
+summary: How your texts should sound - tone, form of address, and the patterns to avoid
 date: YYYY-MM-DD
 ---
 

@@ -1,5 +1,6 @@
 ---
 tags: [context]
+summary: Your brand's names, colours, typography, and the rules that keep them consistent
 date: YYYY-MM-DD
 ---
 
