@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="asbs-architecture-title asbs-architecture-desc">
+        <title id="asbs-architecture-title">AI SecondBrain Stack architecture</title>
+        <desc id="asbs-architecture-desc">Four coding agents each read their own entry file, and all four entry files point at one rulebook, AGENTS.md. The rulebook governs the vault of nine folders and the canonical skills folder, from which two agent-specific skill mirrors are generated.</desc>
+        <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5a5a5a"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d2694a"/>
+          </marker>
+          <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#8a8f96"/>
+          </marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#f7f7f8"/>
+
+        <!-- ============ ARROWS FIRST (paint behind boxes) ============ -->
+
+        <!-- Four agents into the rulebook. Straight verticals: every agent centre
+             sits above the bar, so no elbow and no crossing is needed. -->
+        <line x1="140" y1="128" x2="140" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="380" y1="128" x2="380" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="620" y1="128" x2="620" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="860" y1="128" x2="860" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Rulebook governs the vault and the skills source -->
+        <line x1="300" y1="288" x2="300" y2="380" stroke="#d2694a" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <rect x="240" y="316" width="52" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="266" y="325" fill="#d2694a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">STRUCTURE</text>
+
+        <line x1="720" y1="288" x2="720" y2="380" stroke="#d2694a" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <rect x="736" y="316" width="48" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="760" y="325" fill="#d2694a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">DISCOVERY</text>
+
+        <!-- Skills source generates both mirrors -->
+        <line x1="636" y1="472" x2="636" y2="532" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-soft)"/>
+        <line x1="804" y1="472" x2="804" y2="532" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-soft)"/>
+
+        <!-- ============ NODES ============ -->
+
+        <!-- Agent row -->
+        <rect x="40" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="40" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="48" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="66" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="140" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Claude Code</text>
+        <text x="140" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">CLAUDE.md</text>
+
+        <rect x="280" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="280" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="288" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="306" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="380" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Codex CLI</text>
+        <text x="380" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md</text>
+
+        <rect x="520" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="520" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="528" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="546" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="620" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Gemini CLI</text>
+        <text x="620" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">GEMINI.md</text>
+
+        <rect x="760" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="760" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="768" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="786" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="860" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">OpenCode</text>
+        <text x="860" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md</text>
+
+        <!-- The rulebook — the one focal node -->
+        <rect x="100" y="216" width="800" height="72" rx="6" fill="#f7f7f8"/>
+        <rect x="100" y="216" width="800" height="72" rx="6" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <rect x="108" y="222" width="52" height="12" rx="2" fill="transparent" stroke="rgba(210,105,74,0.40)" stroke-width="0.8"/>
+        <text x="134" y="231" fill="rgba(210,105,74,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RULEBOOK</text>
+        <text x="500" y="256" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">The single rulebook</text>
+        <text x="500" y="276" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md · structure · session routines · git sync · skill reflex</text>
+
+        <!-- The vault -->
+        <rect x="140" y="384" width="320" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="140" y="384" width="320" height="88" rx="6" fill="rgba(26,26,26,0.05)" stroke="#5a5a5a" stroke-width="1"/>
+        <rect x="148" y="390" width="32" height="12" rx="2" fill="transparent" stroke="rgba(90,90,90,0.40)" stroke-width="0.8"/>
+        <text x="164" y="399" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VAULT</text>
+        <text x="300" y="424" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Nine folders, one job each</text>
+        <text x="300" y="442" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">00 Context … 07 Attachments · 99 Templates</text>
+        <text x="300" y="458" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">plain Markdown in a git repo</text>
+
+        <!-- Skills, canonical source -->
+        <rect x="560" y="384" width="320" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="560" y="384" width="320" height="88" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="568" y="390" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.40)" stroke-width="0.8"/>
+        <text x="586" y="399" fill="rgba(26,26,26,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SOURCE</text>
+        <text x="720" y="424" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Skills, the canonical copy</text>
+        <text x="720" y="442" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">skills/</text>
+        <text x="720" y="458" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">frontmatter must start on line 1</text>
+
+        <!-- Generated mirrors -->
+        <rect x="560" y="532" width="152" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="560" y="532" width="152" height="56" rx="6" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="568" y="538" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.30)" stroke-width="0.8"/>
+        <text x="586" y="547" fill="rgba(26,26,26,0.60)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MIRROR</text>
+        <text x="636" y="566" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">For Claude Code</text>
+        <text x="636" y="580" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">.claude/skills/</text>
+
+        <rect x="728" y="532" width="152" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="728" y="532" width="152" height="56" rx="6" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="736" y="538" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.30)" stroke-width="0.8"/>
+        <text x="754" y="547" fill="rgba(26,26,26,0.60)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MIRROR</text>
+        <text x="804" y="566" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">For Codex</text>
+        <text x="804" y="580" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">.agents/skills/</text>
+
+        <!-- ============ LEGEND ============ -->
+        <line x1="40" y1="616" x2="960" y2="616" stroke="rgba(26,26,26,0.10)" stroke-width="0.8"/>
+        <text x="40" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <rect x="128" y="628" width="12" height="10" rx="2" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <text x="148" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">THE ONE RULEBOOK</text>
+
+        <rect x="316" y="628" width="12" height="10" rx="2" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="336" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">CANONICAL SOURCE</text>
+
+        <rect x="508" y="628" width="12" height="10" rx="2" fill="rgba(26,26,26,0.05)" stroke="#5a5a5a" stroke-width="1"/>
+        <text x="528" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">WHAT IT GOVERNS</text>
+
+        <rect x="692" y="628" width="12" height="10" rx="2" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="712" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">GENERATED, NEVER EDITED</text>
+      </svg>

@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Changed
+
+- **Both README diagrams were redrawn.** They were Excalidraw posters that carried everything at once: every folder listed, every rule spelled out, four sections stacked in one image. Redrawn against an editorial design system, each is now one diagram inside its complexity budget with the detail moved into cards beside it. `architecture` shows four agents, one rulebook, the vault, and the two generated skill mirrors, and nothing else. `retrieval-layer` shows a session as a flow: open, pull and report, then the same three-stage search order on every single question, then close. The palette comes from this project's own landing page rather than from the social card, whose dark ground and cyan glow is exactly the look the design system warns against.
+- **The rendered PNGs shrank by 93 %,** from 2.8 MB to 266 KB for the pair, because they are now vector artwork rasterised at 2× rather than exported canvas bitmaps. Each diagram also ships as a self-contained `.html` source and a portable `.svg` next to the PNG, so the next change is an edit rather than a redraw.
+
+### Removed
+
+- **`assets/*.excalidraw`.** The Excalidraw sources are superseded by the `.html` sources beside the new diagrams. Leaving both would have left two editable truths in one folder and no way to tell which one the README was built from. The old files remain in the git history.
+
 ## [1.3.0] — 2026-08-07
 
 A knowledge base is easy to write into and hard to read out of. Every version so far improved the writing half; this one is the reading half. It ships as four rules and two diagrams, and deliberately as no new machinery — the thing it replaces is a generated index, which was built, measured, and thrown away.

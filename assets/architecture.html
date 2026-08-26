@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI SecondBrain Stack — Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-paper:       #f7f7f8;
+      --color-paper-2:     #ececee;
+      --color-ink:         #1a1a1a;
+      --color-muted:       #5a5a5a;
+      --color-soft:        #8a8f96;
+      --color-rule:        rgba(26,26,26,0.12);
+      --color-rule-solid:  #d8d8d8;
+      --color-accent:      #d2694a;
+      --color-accent-tint: rgba(210,105,74,0.10);
+      --color-link:        #2d5bd7;
+      --font-sans:   'Geist', system-ui, sans-serif;
+      --font-serif:  'Instrument Serif', 'Times New Roman', serif;
+      --font-mono:   'Geist Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      min-height: 100vh;
+      padding: 3rem 2rem;
+      color: var(--color-ink);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .header { margin-bottom: 2.5rem; }
+
+    .header-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 3vw + 1rem, 2.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--color-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-muted);
+      max-width: 60ch;
+    }
+
+    .diagram-container {
+      background: transparent;
+      border: none;
+      padding: 0;
+      overflow-x: auto;
+    }
+
+    svg { width: 100%; min-width: 900px; display: block; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 0.9fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #ffffff;
+      border-radius: 6px;
+      border: 1px solid var(--color-rule);
+      padding: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid rgba(26,26,26,0.08);
+    }
+
+    .card-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .card-dot.ink   { background: var(--color-ink); }
+    .card-dot.muted { background: var(--color-muted); }
+    .card-dot.coral { background: var(--color-accent); }
+
+    .card h3 {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      letter-spacing: -0.005em;
+    }
+
+    .card ul {
+      list-style: none;
+      color: var(--color-muted);
+      font-size: 0.8125rem;
+      line-height: 1.55;
+    }
+
+    .card li {
+      margin-bottom: 0.3rem;
+      padding-left: 0.875rem;
+      position: relative;
+    }
+
+    .card li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(26,26,26,0.25);
+      font-size: 0.75rem;
+    }
+
+    .card code {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-ink);
+    }
+
+    .aside {
+      margin-top: 1.5rem;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.0625rem;
+      line-height: 1.5;
+      color: var(--color-ink);
+      max-width: 66ch;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(26,26,26,0.10);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--color-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <p class="header-eyebrow">Architecture</p>
+      <h1>One rulebook, any agent</h1>
+      <p class="subtitle">Four coding agents read four different entry files. All four entry files say the same three lines: read <code>AGENTS.md</code>. Everything below the rulebook is either the vault it governs or a mirror generated from a single source.</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="asbs-architecture-title asbs-architecture-desc">
+        <title id="asbs-architecture-title">AI SecondBrain Stack architecture</title>
+        <desc id="asbs-architecture-desc">Four coding agents each read their own entry file, and all four entry files point at one rulebook, AGENTS.md. The rulebook governs the vault of nine folders and the canonical skills folder, from which two agent-specific skill mirrors are generated.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5a5a5a"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d2694a"/>
+          </marker>
+          <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#8a8f96"/>
+          </marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#f7f7f8"/>
+
+        <!-- ============ ARROWS FIRST (paint behind boxes) ============ -->
+
+        <!-- Four agents into the rulebook. Straight verticals: every agent centre
+             sits above the bar, so no elbow and no crossing is needed. -->
+        <line x1="140" y1="128" x2="140" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="380" y1="128" x2="380" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="620" y1="128" x2="620" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="860" y1="128" x2="860" y2="212" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Rulebook governs the vault and the skills source -->
+        <line x1="300" y1="288" x2="300" y2="380" stroke="#d2694a" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <rect x="240" y="316" width="52" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="266" y="325" fill="#d2694a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">STRUCTURE</text>
+
+        <line x1="720" y1="288" x2="720" y2="380" stroke="#d2694a" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <rect x="736" y="316" width="48" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="760" y="325" fill="#d2694a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">DISCOVERY</text>
+
+        <!-- Skills source generates both mirrors -->
+        <line x1="636" y1="472" x2="636" y2="532" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-soft)"/>
+        <line x1="804" y1="472" x2="804" y2="532" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-soft)"/>
+
+        <!-- ============ NODES ============ -->
+
+        <!-- Agent row -->
+        <rect x="40" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="40" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="48" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="66" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="140" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Claude Code</text>
+        <text x="140" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">CLAUDE.md</text>
+
+        <rect x="280" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="280" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="288" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="306" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="380" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Codex CLI</text>
+        <text x="380" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md</text>
+
+        <rect x="520" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="520" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="528" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="546" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="620" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Gemini CLI</text>
+        <text x="620" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">GEMINI.md</text>
+
+        <rect x="760" y="72" width="200" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="760" y="72" width="200" height="56" rx="6" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <rect x="768" y="78" width="36" height="12" rx="2" fill="transparent" stroke="rgba(138,143,150,0.40)" stroke-width="0.8"/>
+        <text x="786" y="87" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AGENT</text>
+        <text x="860" y="106" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">OpenCode</text>
+        <text x="860" y="120" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md</text>
+
+        <!-- The rulebook — the one focal node -->
+        <rect x="100" y="216" width="800" height="72" rx="6" fill="#f7f7f8"/>
+        <rect x="100" y="216" width="800" height="72" rx="6" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <rect x="108" y="222" width="52" height="12" rx="2" fill="transparent" stroke="rgba(210,105,74,0.40)" stroke-width="0.8"/>
+        <text x="134" y="231" fill="rgba(210,105,74,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RULEBOOK</text>
+        <text x="500" y="256" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">The single rulebook</text>
+        <text x="500" y="276" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">AGENTS.md · structure · session routines · git sync · skill reflex</text>
+
+        <!-- The vault -->
+        <rect x="140" y="384" width="320" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="140" y="384" width="320" height="88" rx="6" fill="rgba(26,26,26,0.05)" stroke="#5a5a5a" stroke-width="1"/>
+        <rect x="148" y="390" width="32" height="12" rx="2" fill="transparent" stroke="rgba(90,90,90,0.40)" stroke-width="0.8"/>
+        <text x="164" y="399" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VAULT</text>
+        <text x="300" y="424" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Nine folders, one job each</text>
+        <text x="300" y="442" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">00 Context … 07 Attachments · 99 Templates</text>
+        <text x="300" y="458" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">plain Markdown in a git repo</text>
+
+        <!-- Skills, canonical source -->
+        <rect x="560" y="384" width="320" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="560" y="384" width="320" height="88" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="568" y="390" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.40)" stroke-width="0.8"/>
+        <text x="586" y="399" fill="rgba(26,26,26,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SOURCE</text>
+        <text x="720" y="424" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Skills, the canonical copy</text>
+        <text x="720" y="442" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">skills/</text>
+        <text x="720" y="458" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">frontmatter must start on line 1</text>
+
+        <!-- Generated mirrors -->
+        <rect x="560" y="532" width="152" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="560" y="532" width="152" height="56" rx="6" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="568" y="538" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.30)" stroke-width="0.8"/>
+        <text x="586" y="547" fill="rgba(26,26,26,0.60)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MIRROR</text>
+        <text x="636" y="566" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">For Claude Code</text>
+        <text x="636" y="580" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">.claude/skills/</text>
+
+        <rect x="728" y="532" width="152" height="56" rx="6" fill="#f7f7f8"/>
+        <rect x="728" y="532" width="152" height="56" rx="6" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="736" y="538" width="36" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.30)" stroke-width="0.8"/>
+        <text x="754" y="547" fill="rgba(26,26,26,0.60)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MIRROR</text>
+        <text x="804" y="566" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">For Codex</text>
+        <text x="804" y="580" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">.agents/skills/</text>
+
+        <!-- ============ LEGEND ============ -->
+        <line x1="40" y1="616" x2="960" y2="616" stroke="rgba(26,26,26,0.10)" stroke-width="0.8"/>
+        <text x="40" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <rect x="128" y="628" width="12" height="10" rx="2" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <text x="148" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">THE ONE RULEBOOK</text>
+
+        <rect x="316" y="628" width="12" height="10" rx="2" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="336" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">CANONICAL SOURCE</text>
+
+        <rect x="508" y="628" width="12" height="10" rx="2" fill="rgba(26,26,26,0.05)" stroke="#5a5a5a" stroke-width="1"/>
+        <text x="528" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">WHAT IT GOVERNS</text>
+
+        <rect x="692" y="628" width="12" height="10" rx="2" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="712" y="636" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">GENERATED, NEVER EDITED</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-dot coral"></span>
+          <h3>Why the adapters stay empty</h3>
+        </div>
+        <ul>
+          <li><code>CLAUDE.md</code> and <code>GEMINI.md</code> are three lines each: read <code>AGENTS.md</code></li>
+          <li>Codex and OpenCode read <code>AGENTS.md</code> natively, so they need no adapter at all</li>
+          <li>A rule written twice is a rule that will disagree with itself</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-dot ink"></span>
+          <h3>Why the skill folder is mirrored</h3>
+        </div>
+        <ul>
+          <li>Claude Code and Codex only discover skills inside their own folder</li>
+          <li>Gemini CLI and OpenCode read <code>skills/</code> directly, because the rulebook tells them to</li>
+          <li>Third-party skills pass a security gate first, one at a time, then land in <code>skills/</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-dot muted"></span>
+          <h3>How it gets there, and stays there</h3>
+        </div>
+        <ul>
+          <li><code>SETUP.md</code> is an installer written for an agent, not for a human. Re-running it only ever adds</li>
+          <li>Every session: pull, triage the inbox, write the daily note</li>
+          <li>Every month, twice: an environment check and a content inventory</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="aside">The one rule underneath all of it: information has exactly one home. Everything above is a consequence of that.</p>
+
+    <div class="footer">
+      <span>AI SecondBrain Stack</span>
+      <span>MIT · natscho-hh/ai-secondbrain-stack</span>
+    </div>
+
+  </div>
+</body>
+</html>

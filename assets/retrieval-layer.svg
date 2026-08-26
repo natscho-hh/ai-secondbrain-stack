@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 784" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="asbs-retrieval-title asbs-retrieval-desc">
+        <title id="asbs-retrieval-title">The retrieval layer of AI SecondBrain Stack</title>
+        <desc id="asbs-retrieval-desc">A session opens with a start hook and a vault-health report, then every single question runs through the same three-stage search order: metadata first, full text only when nothing fits, and finally exactly one file opened and named in the answer. The session closes with a stop hook that refuses while changes are uncommitted.</desc>
+        <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5a5a5a"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d2694a"/>
+          </marker>
+          <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#8a8f96"/>
+          </marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#f7f7f8"/>
+
+        <!-- ============ ZONE (painted before arrows and nodes) ============ -->
+        <rect x="48" y="344" width="904" height="280" rx="8" fill="rgba(26,26,26,0.02)" stroke="rgba(26,26,26,0.10)" stroke-width="0.8"/>
+        <rect x="64" y="348" width="288" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="72" y="357" fill="rgba(26,26,26,0.40)" font-size="7" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ON EVERY QUESTION — A RULE, NOT A PROGRAM</text>
+
+        <!-- ============ ARROWS ============ -->
+
+        <line x1="196" y1="96" x2="196" y2="132" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="196" y1="200" x2="196" y2="236" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="196" y1="304" x2="196" y2="388" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Stage 1 into the decision -->
+        <line x1="312" y1="436" x2="340" y2="436" stroke="#d2694a" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+
+        <!-- Decision, yes: straight on to the one file -->
+        <line x1="456" y1="436" x2="748" y2="436" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <rect x="536" y="408" width="88" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="580" y="417" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">A CANDIDATE FITS</text>
+
+        <!-- Decision, no: fall through to full text -->
+        <path d="M 400 480 V 536 Q 400 544 408 544 H 484" fill="none" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <rect x="416" y="516" width="60" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="446" y="525" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NOTHING FITS</text>
+
+        <!-- Full text back up into the one file -->
+        <path d="M 720 544 H 828 Q 836 544 836 536 V 484" fill="none" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- The loop: next question starts the order again. Hops the path above. -->
+        <path d="M 794 480 V 536 a 8,8 0 0,0 0,16 V 592 Q 794 600 786 600 H 204 Q 196 600 196 592 V 484"
+              fill="none" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-soft)"/>
+        <rect x="448" y="580" width="76" height="12" rx="2" fill="#f7f7f8"/>
+        <text x="486" y="589" fill="#8a8f96" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NEXT QUESTION</text>
+
+        <!-- Out of the loop, into the close -->
+        <line x1="878" y1="480" x2="878" y2="668" stroke="#5a5a5a" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- ============ NODES ============ -->
+
+        <!-- Start -->
+        <rect x="76" y="48" width="240" height="48" rx="20" fill="#f7f7f8"/>
+        <rect x="76" y="48" width="240" height="48" rx="20" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <text x="196" y="78" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">A session opens</text>
+
+        <!-- Start hook -->
+        <rect x="56" y="136" width="280" height="64" rx="6" fill="#f7f7f8"/>
+        <rect x="56" y="136" width="280" height="64" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="64" y="142" width="28" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.40)" stroke-width="0.8"/>
+        <text x="78" y="151" fill="rgba(26,26,26,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HOOK</text>
+        <text x="196" y="172" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Pull, then report</text>
+        <text x="196" y="190" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">inbox · open agent branches · due routines</text>
+
+        <!-- vault-health -->
+        <rect x="56" y="240" width="280" height="64" rx="6" fill="#f7f7f8"/>
+        <rect x="56" y="240" width="280" height="64" rx="6" fill="rgba(26,26,26,0.05)" stroke="#5a5a5a" stroke-width="1"/>
+        <rect x="64" y="246" width="36" height="12" rx="2" fill="transparent" stroke="rgba(90,90,90,0.40)" stroke-width="0.8"/>
+        <text x="82" y="255" fill="rgba(90,90,90,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHECK</text>
+        <text x="196" y="276" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Reports, never repairs</text>
+        <text x="196" y="294" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">vault-health · dead links · frontmatter · summary</text>
+
+        <!-- Stage 1 — the focal rule -->
+        <rect x="80" y="392" width="232" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="80" y="392" width="232" height="88" rx="6" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <rect x="88" y="398" width="44" height="12" rx="2" fill="transparent" stroke="rgba(210,105,74,0.40)" stroke-width="0.8"/>
+        <text x="110" y="407" fill="rgba(210,105,74,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STAGE 1</text>
+        <text x="196" y="432" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Titles, tags, summary</text>
+        <text x="196" y="450" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">judge the candidates</text>
+        <text x="196" y="464" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">without opening a file</text>
+
+        <!-- Decision -->
+        <polygon points="400,392 456,436 400,480 344,436" fill="#f7f7f8"/>
+        <polygon points="400,392 456,436 400,480 344,436" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="400" y="432" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Enough</text>
+        <text x="400" y="448" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">to judge?</text>
+
+        <!-- Stage 2 -->
+        <rect x="484" y="512" width="236" height="64" rx="6" fill="#f7f7f8"/>
+        <rect x="484" y="512" width="236" height="64" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="492" y="518" width="44" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.40)" stroke-width="0.8"/>
+        <text x="514" y="527" fill="rgba(26,26,26,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STAGE 2</text>
+        <text x="602" y="548" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Then the full text</text>
+        <text x="602" y="566" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">only when nothing fits</text>
+
+        <!-- Stage 3 -->
+        <rect x="748" y="392" width="172" height="88" rx="6" fill="#f7f7f8"/>
+        <rect x="748" y="392" width="172" height="88" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="756" y="398" width="44" height="12" rx="2" fill="transparent" stroke="rgba(26,26,26,0.40)" stroke-width="0.8"/>
+        <text x="778" y="407" fill="rgba(26,26,26,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STAGE 3</text>
+        <text x="834" y="432" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Exactly one file</text>
+        <text x="834" y="450" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">the relevant section,</text>
+        <text x="834" y="464" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">named in the answer</text>
+
+        <!-- End -->
+        <rect x="756" y="668" width="240" height="48" rx="20" fill="#f7f7f8"/>
+        <rect x="756" y="668" width="240" height="48" rx="20" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <text x="876" y="690" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">A session closes</text>
+        <text x="876" y="706" fill="#5a5a5a" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">stop hook · not while uncommitted</text>
+
+        <!-- ============ EDITORIAL CALLOUT ============ -->
+        <text x="936" y="268" fill="#d2694a" font-size="14" font-style="italic" font-family="'Instrument Serif', serif" text-anchor="end">Structure is the index.</text>
+        <path d="M 812 276 Q 776 308 736 340" fill="none" stroke="rgba(210,105,74,0.50)" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="732" cy="344" r="2" fill="#d2694a"/>
+
+        <!-- ============ LEGEND ============ -->
+        <line x1="48" y1="744" x2="952" y2="744" stroke="rgba(26,26,26,0.10)" stroke-width="0.8"/>
+        <text x="48" y="764" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <rect x="136" y="756" width="12" height="10" rx="2" fill="rgba(210,105,74,0.10)" stroke="#d2694a" stroke-width="1"/>
+        <text x="156" y="764" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">THE STAGE THAT DOES THE WORK</text>
+
+        <rect x="424" y="756" width="12" height="10" rx="2" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="444" y="764" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">STEP OR DECISION</text>
+
+        <rect x="640" y="756" width="12" height="10" rx="2" fill="rgba(90,90,90,0.10)" stroke="#8a8f96" stroke-width="1"/>
+        <text x="660" y="764" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">SESSION BOUNDARY</text>
+
+        <line x1="856" y1="761" x2="884" y2="761" stroke="#8a8f96" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="892" y="764" fill="#5a5a5a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.06em">REPEATS</text>
+      </svg>

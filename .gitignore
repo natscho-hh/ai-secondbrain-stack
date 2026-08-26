@@ -7,3 +7,7 @@ Thumbs.db
 
 # Planning-tool scratch artifacts (briefs, reports, diffs — not part of the shipped template)
 .superpowers/
+
+# Diagram Design profile marker — points at a style profile that lives in the
+# author's home directory, not in this repo. Useless to anyone who clones it.
+.diagram-design

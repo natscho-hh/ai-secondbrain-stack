@@ -35,7 +35,7 @@ Your agent will clone the repo, run the environment checks, interview you about 
 
 ## How it works
 
-![How the AI SecondBrain Stack fits together](assets/architecture.png)
+![Four coding agents read four entry files, all of which point at one rulebook, AGENTS.md, which governs the vault and the canonical skills folder](assets/architecture.png)
 
 `AGENTS.md` is the single rulebook — every rule about vault structure, session routines, and git sync lives there and nowhere else. `CLAUDE.md` and `GEMINI.md` (and equivalents for other agents) are thin, three-line adapter files that simply point their respective agent at `AGENTS.md`, so the rules never have to be duplicated or kept in sync by hand. Your agent itself is the installer: `SETUP.md` is a script written for an AI agent to execute, not for a human to run manually, and it walks through environment checks, an interview, and vault assembly. Once set up, `MAINTENANCE.md` defines a recurring routine that keeps the rulebook, skills, and adapters up to date as the ecosystem changes.
 
@@ -43,7 +43,7 @@ Your agent will clone the repo, run the environment checks, interview you about 
 
 A knowledge base is easy to write into and hard to read out of. The retrieval layer is the part that keeps the second half working as the vault grows, and it is deliberately made of rules rather than machinery — no generated index, no separate search database, nothing that has to be rebuilt.
 
-![The retrieval layer: four moments in a session, and what the vault itself carries](assets/retrieval-layer.png)
+![A session opens with a pull and a vault-health report, then every question runs the same three-stage search order before the session closes](assets/retrieval-layer.png)
 
 Every active note carries a `summary:` line describing what it is *for*, never what state it is in — a sentence about purpose does not go stale when the work moves on. The search order reads titles, tags, and those summaries before it ever touches full text, then opens exactly one file and names it in the answer. And because a note nobody links to is found only by accident, a hub always lists its own sub-files. `vault-health` checks all three, reports, and repairs nothing.
 
