@@ -30,6 +30,8 @@ Your agent will clone the repo, run the environment checks, interview you about 
 - **Git sync after every change**, so your second brain is versioned, diffable, and recoverable like any codebase
 - **Portable skills** that travel with the vault instead of living in a single agent's private config
 - **Maintenance built in** — a standing routine for keeping the setup current as agents and tools evolve
+- **Project codes** — a short, permanent identifier per project and area that ties scheduled jobs, logs, branches, and commits back to the note they belong to, with an Obsidian view that lists them all
+- **Safe parallel sessions** — a worktree per session in code repos, named staging in the vault, and the recipe for untangling a commit that swallowed another session's work
 - **A retrieval layer** so the vault stays findable as it grows — a one-line `summary:` on every note, a search order that reads metadata before full text, and the rule that a hub always links its own sub-files
 - **Works in Obsidian** out of the box — ships with a starter `.obsidian/` config (sensible editor defaults, per-folder graph colors, a theme selection) so the graph view and editor look considered from the first launch, on top of the same plain-text files your agent reads and writes
 
@@ -80,8 +82,11 @@ ai-secondbrain-stack/
 │   ├── 04 Resources/       # reference knowledge and documentation
 │   ├── 05 Daily Notes/     # YYYY-MM-DD.md daily log
 │   ├── 06 Archive/         # completed projects and inactive areas
-│   ├── 07 Attachments/     # images, PDFs, and other media
-│   └── 99 Templates/       # Obsidian note templates (daily note, project, inbox capture)
+│   ├── 07 Attachments/     # images, PDFs, and other media, one folder per owner
+│   ├── 99 Templates/       # Obsidian note templates (daily note, project, inbox capture)
+│   ├── todos.md            # cross-project priority board
+│   ├── Projects.base       # Obsidian view of every note with a project code
+│   └── .gitignore          # keeps derived renders and window layout out of git
 └── docs/                  # GitHub Pages landing page
 ```
 

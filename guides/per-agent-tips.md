@@ -53,7 +53,11 @@ The rows are the portable/vendor-specific split in one view: the rulebook, skill
   git pull --no-edit origin main
   echo "Inbox:"
   ls "01 Inbox"
+  echo "Agent branches not merged into main:"
+  git branch -r --no-merged origin/main | grep -v 'origin/HEAD'
   ```
+
+  The last two lines are session-start step 4 from `AGENTS.md`. Unattended agents write to `agent/<topic>` branches, and a hook that only reads `main` never shows their work.
 
   `stop-gitsync.sh` is a git-sync guard: exit code 2 blocks the session from ending and shows the message to Claude, so unsynced changes can't slip through. The `stop_hook_active` check prevents an infinite loop:
 
@@ -68,6 +72,31 @@ The rows are the portable/vendor-specific split in one view: the rulebook, skill
   ```
 
   On Windows, write the same two scripts in PowerShell and call them with `powershell -NoProfile -ExecutionPolicy Bypass -File`. Codex has its own hook system with the same JSON shape (`~/.codex/hooks.json` or project-local `.codex/hooks.json`; note Codex expects JSON on stdout — plain-text output is discarded as failed, and project-local hooks must be trusted once via `/hooks`). Gemini CLI now has a hooks system too (`SessionStart` / `SessionEnd` events configured in `settings.json` — see the [Gemini CLI hooks reference](https://geminicli.com/docs/hooks/reference/)), but both events are advisory only: the CLI never waits on them and ignores their `continue`/`decision` fields, so they can't block startup or exit the way the git-sync guard above needs. OpenCode's plugin system (`"plugin": [...]` in `opencode.json` — see the [OpenCode plugin docs](https://opencode.ai/docs/plugins/)) can veto actions, such as a tool call, from inside a `tool.execute.before` hook, but its session events (`session.created`, `session.idle`, and so on) track chat-session lifecycle, not the CLI process starting or exiting, so there's no equivalent of the Stop guard there either. For both agents the routines stay conversational, which is exactly why they're written down in `AGENTS.md`.
+
+- **Context fill level in the status line (optional, recommended):** Claude Code passes a JSON object on stdin to the status-line command on every refresh. Its `context_window.used_percentage` field is the fill level of the current context window, and `model.display_name` names the model. A few lines turn that into a gauge you see all the time instead of a number you have to ask for with `/context`:
+
+  ```json
+  { "statusLine": { "type": "command", "command": "sh .claude/statusline.sh" } }
+  ```
+
+  ```sh
+  #!/bin/sh
+  # Green below 50 %, yellow from 50 %, red from 75 %.
+  jq -r '
+    (.context_window.used_percentage // empty | floor) as $p
+    | (if $p >= 75 then "196" elif $p >= 50 then "214" else "114" end) as $c
+    | "\u001b[38;5;\($c)mctx \($p)%\u001b[0m \(.model.display_name // "")"'
+  ```
+
+  Put the setting in `~/.claude/settings.json` if you want it in every project, or in the vault's `.claude/settings.json` for the vault alone. On Windows, the same logic in PowerShell reads stdin with `[Console]::In.ReadToEnd()` and parses it with `ConvertFrom-Json`. If you already run another status-line script, call it from the same process rather than starting a second shell — on Windows each extra PowerShell start costs around 400 ms per refresh.
+
+- **Measure your base context before optimizing it.** Everything loaded before your first word — system prompt, rulebook, memory index, skill descriptions, MCP tool names, hook output — is paid again on every cache rewrite. One headless call shows how much it is:
+
+  ```sh
+  claude -p "Reply with the word OK." --output-format json
+  ```
+
+  The `usage.cache_creation_input_tokens` value of that first reply is your base context. Run it once more with `--strict-mcp-config` (no MCP servers from config files) and once with `--disable-slash-commands` (no skills), and the differences tell you what each layer costs. Measured in the vault this template comes from: roughly 98,000 tokens in total, about 17,000 of them for MCP servers even though most of their tools were only loaded by name, and just 1,200 for all skill descriptions together — skills are cheap, connectors are not. The two savings did not simply add up, so measure the combination too rather than summing. In the same vault, identical rule text cost **1.5 times as many tokens in German as in English**; that is worth knowing, and not a reason to write your rules in a language you do not read.
 
 - **Tool router on `UserPromptSubmit` (optional, measured, not recommended by default):** the skill-reflex rule in `AGENTS.md` asks the agent to check the available tools before every task. A tempting way to enforce that is a machine-readable tool register plus a `UserPromptSubmit` hook that injects only the matching lines, so a long tool table stops being loaded on every session. It works — it was built and measured in the vault this template comes from. The numbers are worth knowing before copying the idea:
 
