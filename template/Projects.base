@@ -1,0 +1,70 @@
+# Projects — every note that carries a project code.
+# The codes themselves live in the register in AGENTS.md; this view only reads
+# them from the code: field in the frontmatter of the hub notes.
+# If you translated the folder names, translate the three folder names in the
+# "level" formula as well, or every note lands under "Other".
+filters:
+  and:
+    - 'code'
+
+formulas:
+  level: 'if(file.folder.startsWith("02 Projects"), "Projects", if(file.folder.startsWith("03 Areas"), "Areas", if(file.folder.startsWith("04 Resources"), "Resources", "Other")))'
+  state: 'if(status, status, "no status")'
+
+properties:
+  code:
+    displayName: "Code"
+  file.name:
+    displayName: "Name"
+  summary:
+    displayName: "Purpose"
+  file.folder:
+    displayName: "Folder"
+  formula.level:
+    displayName: "Level"
+  formula.state:
+    displayName: "Status"
+
+views:
+  - type: table
+    name: "All by code"
+    order:
+      - code
+      - file.name
+      - formula.state
+      - summary
+      - file.folder
+
+  - type: table
+    name: "By level"
+    groupBy:
+      property: formula.level
+      direction: ASC
+    order:
+      - code
+      - file.name
+      - formula.state
+      - summary
+
+  - type: table
+    name: "Active"
+    filters:
+      and:
+        - 'status == "active"'
+    order:
+      - code
+      - file.name
+      - summary
+      - file.folder
+
+  - type: table
+    name: "Resting"
+    filters:
+      or:
+        - 'status == "paused"'
+        - 'status == "waiting"'
+    order:
+      - code
+      - file.name
+      - status
+      - summary

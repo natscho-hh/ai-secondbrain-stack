@@ -1,5 +1,6 @@
 ---
 tags: [project]
+code: EXMPL
 summary: Worked example of a project note - shows the expected frontmatter, state block, and roadmap shape
 status: active
 date: YYYY-MM-DD

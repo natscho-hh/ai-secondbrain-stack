@@ -30,6 +30,8 @@ It is also the failure type that grows. A stale link is one dead end. A stale *d
 
 An agent that tidies up along the way takes that decision away and leaves the user facing accomplished facts. Two exceptions, both uncontroversial: a rollback tag before the run, and the final report itself — without it the session has no result.
 
+**The rollback tag carries the full date,** `rollback/inventory-YYYY-MM-DD`. The month alone is not enough: a second run in the same month would move the tag of the first and take away its safety net. Tags live in their own namespace, so a day-precise name collides with nothing.
+
 If the user does say "go ahead and fix all of it", see **After implementation** at the bottom. That is a second, separate check, and it is not optional either.
 
 ## Scope
@@ -119,6 +121,8 @@ One file, under `04 Resources/` in a dated inventory folder. Structure:
 4. **Recommendations, numbered,** each with effort and benefit, so the user can tick them off
 5. **What is explicitly fine,** so the next run does not re-examine the same places
 
+Name the file `YYYY-MM.md`. **If the inventory runs a second time in the same month,** the report gets a letter: `YYYY-MMb.md`, then `YYYY-MMc.md`. The earlier report is never overwritten. A full date in the file name looks like the obvious alternative and is the wrong one: `2026-08-22.md` collides with the daily note of the same day, and because Obsidian resolves wikilinks by name, every link to either file becomes ambiguous.
+
 Commit it. If a session-start hook nudges for this routine, use whatever commit convention that hook greps for, and record the date in `.maintenance-log.md` as `last-inventory`.
 
 ## Pitfalls, learned the hard way
@@ -131,6 +135,7 @@ Every one of these comes from a real run.
 - **Link occurrences and link targets are not the same thing.** Eleven dead targets can be seventeen occurrences. Report both, or the finding looks bigger or smaller than it is.
 - **Two conditions for a corpse, never one.**
 - **Skill mirrors need their own check, and it is not the orphan check.** Generated mirror folders are not orphans. But do ask two questions about them: have the copies drifted apart, and is anything committed there that does not belong in a repository (compiled bytecode, caches, build leftovers)? Watch for mirrors that are *deliberately* adapted per agent — those must not be "synchronized" back.
+- **Whoever copies a file inherits its errors.** Before bringing a drifted mirror back in line, validate the source, not just the difference. In one run, three `SKILL.md` files had carried invalid YAML for two weeks — an unquoted colon inside `description:` — and synchronizing the mirrors neatly doubled the defect.
 - **Do not turn a correct raw finding into an overstated verdict.** That a rule was never enforced does not prove the rule is wrong. When two readings are defensible, both belong in the report and the decision belongs to the user.
 - **A finding that leads to a deletion recommendation needs the full file list, not the summary.** "Just one leftover script" and "24 files, 18 of them templates" lead to different decisions. And where there is no git history, back the content up before deleting and count the backup against the original.
 - **Repair nothing.** Not even the obvious ones. Not even "it's only a typo".

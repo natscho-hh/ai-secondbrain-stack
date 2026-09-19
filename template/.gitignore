@@ -1,0 +1,13 @@
+# Obsidian per-session state: window and pane layout, not settings.
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.trash/
+
+# Derived files do not go into git. A render sits in a renders/ folder next
+# to its source and can be regenerated any time; images do not delta-compress,
+# so every redraw would otherwise store a full copy in the history.
+07 Attachments/**/renders/
+
+# Operating system clutter
+.DS_Store
+Thumbs.db

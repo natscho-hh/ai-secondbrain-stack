@@ -74,6 +74,12 @@ None of these run the maintenance routine itself — they only leave a note. The
    ```
 
    If that fails with `Plugin not found` even though `claude plugin list` shows the plugin, pass the fully qualified id instead: `claude plugin update <name>@<marketplace>`. Both forms are documented; the short one is not reliable across versions when a name is ambiguous.
+
+   Three follow-ups belong to this step:
+
+   - **Remove loose copies next to plugins.** Skill managers and installers happily re-create a loose skill with the same name as one a plugin already ships, so the rule in `AGENTS.md` § Skill reflex stops holding a few days after it was set. List loose skills whose name matches a plugin skill and remove the loose one. Leave the `.agents/skills/` mirror alone — agents that cannot load plugins read it.
+   - **Prune old plugin versions.** An update puts the new version next to the old one in the plugin cache and removes nothing; one plugin in the vault this template comes from had six versions lying there, 4.6 GB, of which exactly one was loaded. Keep the active version plus exactly one way back, the newest inactive one, and remove the rest. Right after an update the previous version is the only fast rollback, so do not delete everything.
+   - **Run `/doctor` inside a session once a month.** It lists MCP servers, plugins, and skills that did nothing in the last seven days yet still cost context on every session. A script cannot run it, because it needs a live session. `claude doctor` on the command line is a different thing — it checks only the installation.
 7. **Template update.** Read the version comment on line 1 of the vault's local `AGENTS.md` (`<!-- asbos-template-version: … -->` — the `asbos` key is a stable identifier from the project's original name and never changes) and compare it against the current version of `AGENTS.md` in the public `ai-secondbrain-stack` repo. If the public version is newer:
    - show what changed (changelog or diff) between the two versions,
    - offer **selective adoption** — the user picks which changes to bring in,
@@ -86,3 +92,5 @@ None of these run the maintenance routine itself — they only leave a note. The
 Every step that changes something is preceded by a commit. If any update causes a problem, it can always be undone with `git revert` — nothing here is destructive or irreversible.
 
 **One caution that applies to both routines.** When a step commits inside a repository other than the vault, stage the files you actually changed. A blanket `git add -A` there picks up whatever that repository's `.gitignore` does not cover on the branch you happen to be on, and ignore rules routinely differ between branches. That is how a one-line documentation fix ends up carrying thousands of lines of generated output.
+
+**Test every guard once against a real fault.** A check that has never fired is not known to work. In the vault this template comes from, a mirror-drift check wrote "no drift" into its log for a week while four skills had already diverged — it compared line counts, and three of the four differences were a changed description line with an identical count. A second guard, meant to block updates while the agent was running, searched for a process name the tool had stopped using and reported "all clear" for weeks. Neither said "broken"; both said "fine". So when you add or change a guard, plant one real fault — a single changed character, an extra folder — and watch it fire before you trust it. Prefer content hashes over counts, and a failed check over a skipped one: a pair that cannot be compared is a finding, not a pass.
